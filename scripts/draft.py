@@ -49,6 +49,42 @@ SHA_REF_DRAFT = re.compile(r"^([A-Za-z0-9._-]+)@([0-9a-f]{7,40})$")
 SKIP_DIFF = re.compile(r"\.(lock|png|jpg|jpeg|pdf|otf|ttf|woff2?|svg|ico|strings)$|"
                        r"(^|/)(dist|build|generated|\.next)/", re.I)
 
+NEW_THREAD_PROMPT = """You are maintaining a one-page engineering CV.
+
+A cluster of new work has no matching line on the CV yet. Decide whether it
+belongs on the CV at all, and if so, write the line and say where it goes.
+
+THE WORK
+{work}
+
+PLACES IT COULD GO (use the name exactly as written, or "none")
+{places}
+
+RULES
+- Most work does not belong on a CV. Practice exercises, config tweaks,
+  dependency bumps, scaffolding and README edits are not achievements. If
+  in doubt, answer worthy=false. A CV that grows every month is a worse CV.
+- Place it under the employer or project whose repository this is. If none
+  of the listed places fit and the work is a substantial project in its own
+  right, use "new_project" and give it a name and stack.
+- Never invent metrics, ownership, scale or production use.
+- 20-40 words. LaTeX markup allowed: \\textbf{{...}}. Literal percent as \\%.
+- `tags` come from this vocabulary where they apply: ios, swift, flutter,
+  dart, web, react, typescript, backend, architecture, performance,
+  security, ui, ai, mobile, leadership, testing, devops.
+
+Reply with ONLY a JSON object, no prose, no fence:
+{{"worthy": true | false,
+  "why": "one sentence",
+  "place": "exact name from the list, or new_project, or none",
+  "project_name": "only when place is new_project",
+  "stack": "only when place is new_project",
+  "id": "kebab-case-thread-id",
+  "text": "the CV line",
+  "tags": ["..."],
+  "weight": 1-10}}
+"""
+
 PROMPT = """You are maintaining a one-page engineering CV. Rewrite ONE line of it.
 
 The line describes an ongoing thread of work. New commits have landed on that
@@ -225,7 +261,7 @@ def apply_rewrite(thread_id: str, text: str, add_evidence: list[str]) -> bool:
         text_line = re.search(r'^[ \t]*text(\s*)=\s*"(?:[^"\\]|\\.)*"[ \t]*$', rest, re.M)
         if not text_line:
             return False
-        escaped = text.replace("\\", "\\\\").replace('"', '\\"')
+        escaped = toml_str(text)
         rest = (rest[:text_line.start()]
                 + f'{indent}text{text_line.group(1)}= "{escaped}"'
                 + rest[text_line.end():])
@@ -246,6 +282,92 @@ def apply_rewrite(thread_id: str, text: str, add_evidence: list[str]) -> bool:
         path.write_text(head + rest)
         return True
     return False
+
+
+def toml_str(value: str) -> str:
+    """Escape a value for a TOML basic string.
+
+    TOML reads \\t, \\n and friends as control characters, so writing LaTeX
+    like \\textbf verbatim silently turns the command into a TAB followed by
+    "extbf" -- valid TOML, valid LaTeX-free text, and a corrupted CV line.
+    Backslashes must be doubled and quotes escaped.
+    """
+    return value.replace("\\", "\\\\").replace('"', '\\"')
+
+
+def plain(label: str) -> str:
+    """Strip LaTeX so a name compares equal however it was read.
+
+    entry_places() reads names through tomllib, where "\\\\textbf" has already
+    become a single backslash; insert_bullet() regexes the raw file, where it
+    is still two characters. Removing command names alone left a stray
+    backslash on one side and the two never matched.
+    """
+    return " ".join(re.sub(r"\\+[a-zA-Z]+|[\\{}]", "", label).split())
+
+
+def entry_places(content: Path) -> list[str]:
+    """Employers and projects a new bullet could be attached to."""
+    import tomllib
+    places = []
+    for name in ("experience.toml", "projects.toml", "leadership.toml"):
+        path = content / name
+        if not path.is_file():
+            continue
+        with path.open("rb") as handle:
+            data = tomllib.load(handle)
+        for entry in data.get("entry", []):
+            label = entry.get("org") or entry.get("name") or ""
+            clean = plain(label)
+            dates = entry.get("dates", "")
+            places.append(f"{clean}  [{name.replace('.toml','')}{', ' + dates if dates else ''}]")
+    return places
+
+
+def insert_bullet(content: Path, place: str, bullet: dict[str, Any]) -> bool:
+    """Add a bullet to an existing entry, keeping the file's comments."""
+    target = plain(re.sub(r"\s*\[.*\]$", "", place))
+    for name in ("experience.toml", "projects.toml", "leadership.toml"):
+        path = content / name
+        if not path.is_file():
+            continue
+        source = path.read_text()
+        for m in re.finditer(r'^(?:org|name)\s*=\s*"(.+)"\s*$', source, re.M):
+            clean = plain(m.group(1))
+            if clean != target:
+                continue
+            # Insert just before the next [[entry]], or at end of file.
+            nxt = re.search(r"^\[\[entry\]\]", source[m.end():], re.M)
+            at = m.end() + nxt.start() if nxt else len(source)
+            ev = "".join(f'    "{e}",\n' for e in bullet["evidence"])
+            block = (f'\n  [[entry.bullets]]\n'
+                     f'  id       = "{bullet["id"]}"\n'
+                     f'  text     = "{toml_str(bullet["text"])}"\n'
+                     f'  tags     = {json.dumps(bullet["tags"])}\n'
+                     f'  weight   = {bullet["weight"]}\n'
+                     f'  evidence = [\n{ev}  ]\n')
+            path.write_text(source[:at].rstrip("\n") + "\n" + block + "\n" + source[at:])
+            return True
+    return False
+
+
+def create_project(content: Path, bullet: dict[str, Any], name: str, stack: str) -> bool:
+    path = content / "projects.toml"
+    ev = "".join(f'    "{e}",\n' for e in bullet["evidence"])
+    block = (f'\n[[entry]]\n'
+             f'name   = "{toml_str(name)}"\n'
+             f'stack  = "{toml_str(stack)}"\n'
+             f'tags   = {json.dumps(bullet["tags"])}\n'
+             f'weight = {bullet["weight"]}\n'
+             f'links  = []\n\n'
+             f'  [[entry.bullets]]\n'
+             f'  id       = "{bullet["id"]}"\n'
+             f'  text     = "{toml_str(bullet["text"])}"\n'
+             f'  tags     = {json.dumps(bullet["tags"])}\n'
+             f'  weight   = {bullet["weight"]}\n'
+             f'  evidence = [\n{ev}  ]\n')
+    path.write_text(path.read_text().rstrip("\n") + "\n" + block)
+    return True
 
 
 def main() -> int:
@@ -272,7 +394,13 @@ def main() -> int:
                 print(f"  applied {item['thread']}", file=sys.stderr)
             else:
                 print(f"  FAILED to apply {item['thread']}", file=sys.stderr)
-        print(f"applied {applied}/{len(saved['rewrites'])} saved rewrites", file=sys.stderr)
+        for item in saved.get("new_threads", []):
+            if item["place"] == "new_project" and item.get("project_name"):
+                create_project(CONTENT, item, item["project_name"], item.get("stack", ""))
+            elif item["place"] and item["place"] != "none":
+                insert_bullet(CONTENT, item["place"], item)
+        print(f"applied {applied}/{len(saved['rewrites'])} saved rewrites, "
+              f"{len(saved.get('new_threads', []))} new thread(s)", file=sys.stderr)
         return 0 if applied == len(saved["rewrites"]) else 1
 
     data = json.loads(args.proposals.expanduser().resolve().read_text(encoding="utf-8"))
@@ -340,19 +468,47 @@ def main() -> int:
         lines += ["<details><summary>New commits</summary>", "",
                   "```", units_text[:4000], "```", "</details>", "", "---", ""]
 
+    new_threads = []
     if data["candidate_new_threads"]:
-        lines += ["## Candidate new threads", "",
-                  "Not applied automatically — deciding whether work belongs on the CV, "
-                  "and under which role, needs a human.", ""]
+        places = entry_places(CONTENT)
+        lines += ["## New threads", ""]
         for c in data["candidate_new_threads"]:
-            lines += [f"### {c['repo']} · `{c['area']}`",
-                      f"{c['unit_count']} units, +{c['added']} lines", ""]
-            lines += [f"- {s}" for s in c["subjects"][:6]] + [""]
+            work = (f"repo: {c['repo']}   area: {c['area']}\n"
+                    f"{c['unit_count']} commits, +{c['added']} lines\n"
+                    + "\n".join(f"  - {s}" for s in c["subjects"][:10]))
+            repo = repos.get(c["repo"])
+            if repo:
+                work += "\n\n" + diff_excerpt(repo, c["shas"][0])
+
+            verdict = None if args.no_claude else ask_claude(
+                NEW_THREAD_PROMPT.format(work=work, places="\n".join(f"  - {p}" for p in places)))
+
+            head = f"### {c['repo']} · `{c['area']}` — {c['unit_count']} units, +{c['added']}"
+            if not verdict:
+                lines += [head, "", "_No verdict drafted._", ""]
+                lines += [f"- {s}" for s in c["subjects"][:6]] + [""]
+                continue
+            if not verdict.get("worthy"):
+                lines += [head, "", f"**Not CV material** — {verdict.get('why','')}", ""]
+                continue
+            evidence = [f"{c['repo']}@{s[:7]}" for s in c["shas"][:6]]
+            item = {"id": verdict.get("id") or f"{c['repo'].lower()}-work",
+                    "text": verdict.get("text", ""),
+                    "tags": verdict.get("tags") or [],
+                    "weight": int(verdict.get("weight") or 6),
+                    "evidence": evidence,
+                    "place": verdict.get("place", "none"),
+                    "project_name": verdict.get("project_name"),
+                    "stack": verdict.get("stack", "")}
+            new_threads.append(item)
+            lines += [head, "", f"**New line** → _{item['place']}_", "",
+                      f"> {item['text']}", "", f"*{verdict.get('why','')}*", ""]
 
     args.output.write_text("\n".join(lines), encoding="utf-8")
     drafted = args.output.with_suffix(".json")
     drafted.write_text(json.dumps({"version": 1, "window": window,
-                                   "rewrites": results}, indent=2) + "\n",
+                                   "rewrites": results,
+                                   "new_threads": new_threads}, indent=2) + "\n",
                        encoding="utf-8")
     print(f"\nwrote {args.output.name} and {drafted.name}", file=sys.stderr)
 
@@ -364,7 +520,16 @@ def main() -> int:
                 print(f"  applied {item['thread']}", file=sys.stderr)
             else:
                 print(f"  FAILED to apply {item['thread']}", file=sys.stderr)
-        print(f"applied {applied}/{len(results)} rewrites to content/", file=sys.stderr)
+        for item in new_threads:
+            if item["place"] == "new_project" and item.get("project_name"):
+                ok = create_project(CONTENT, item, item["project_name"], item.get("stack", ""))
+            elif item["place"] and item["place"] != "none":
+                ok = insert_bullet(CONTENT, item["place"], item)
+            else:
+                ok = False
+            print(f"  {'added' if ok else 'SKIPPED'} new thread {item['id']}", file=sys.stderr)
+        print(f"applied {applied}/{len(results)} rewrites, "
+              f"{len(new_threads)} new thread(s)", file=sys.stderr)
     elif args.apply:
         print("nothing to apply", file=sys.stderr)
     return 0

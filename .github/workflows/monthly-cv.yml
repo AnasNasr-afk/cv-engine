@@ -44,6 +44,7 @@ jobs:
             MONTH=$(date -u -d "last month" +%Y-%m)
           fi
           echo "month=$MONTH" >> "$GITHUB_OUTPUT"
+          echo "title=$(date -u -d "$MONTH-01" +'%B %Y')" >> "$GITHUB_OUTPUT"
           echo "branch=cv/$MONTH" >> "$GITHUB_OUTPUT"
           echo "Collecting $MONTH"
 
@@ -130,6 +131,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           MONTH: ${{ steps.window.outputs.month }}
+          TITLE: ${{ steps.window.outputs.title }}
           BRANCH: ${{ steps.window.outputs.branch }}
         run: |
           set -euo pipefail
@@ -141,11 +143,11 @@ jobs:
           if git diff --cached --quiet; then
             echo "No content changes to propose."; exit 0
           fi
-          git commit -q -m "CV update for $MONTH"
+          git commit -q -m "CV update — $TITLE"
           git push -q --force-with-lease origin "$BRANCH"
 
           {
-            echo "## Proposed CV — $MONTH"
+            echo "## $TITLE"
             echo
             echo "![CV preview](https://github.com/${{ github.repository }}/blob/$BRANCH/previews/cv-ios.png?raw=true)"
             echo
@@ -156,5 +158,5 @@ jobs:
             gh pr edit "$BRANCH" --body-file pr-body.md
           else
             gh pr create --base main --head "$BRANCH" \
-              --title "CV update — $MONTH" --body-file pr-body.md
+              --title "$TITLE" --body-file pr-body.md
           fi

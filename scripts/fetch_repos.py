@@ -36,6 +36,10 @@ def run(cmd: list[str], cwd: Path | None = None, env: dict | None = None) -> tup
 
 def git_env() -> dict[str, str]:
     env = dict(os.environ)
+    # Never let git block on an interactive prompt. Without a token, a
+    # private repository would otherwise hang the runner until timeout
+    # waiting for a password nobody can type. Public repos still clone.
+    env["GIT_TERMINAL_PROMPT"] = "0"
     token = env.get("GH_TOKEN") or env.get("GITHUB_TOKEN")
     if token:
         # Supply the token via askpass rather than embedding it in the URL,
