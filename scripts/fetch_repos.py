@@ -62,6 +62,8 @@ def main() -> int:
     parser.add_argument("--into", type=Path, default=ROOT / "_evidence")
     parser.add_argument("--full", action="store_true",
                         help="clone with full blobs instead of blobless")
+    parser.add_argument("--require-all", action="store_true",
+                        help="fail unless every repository was reachable")
     args = parser.parse_args()
 
     config = json.loads(args.config.expanduser().resolve().read_text(encoding="utf-8"))
@@ -102,7 +104,17 @@ def main() -> int:
         helper.unlink()
 
     print(f"\n{ok} ready, {failed} failed, into {target.name}/")
-    return 0 if failed == 0 else 1
+    if failed:
+        print("  Unreachable repositories are skipped, not fatal: a token cannot\n"
+              "  cover repos owned by another user or org, and one month's\n"
+              "  collection should not be thrown away because two are missing.",
+              file=sys.stderr)
+    # Only a total failure means something is actually wrong -- a bad token,
+    # no network. Partial failure is the normal steady state.
+    if ok == 0:
+        print("error: no repositories could be fetched", file=sys.stderr)
+        return 1
+    return 1 if (args.require_all and failed) else 0
 
 
 if __name__ == "__main__":
