@@ -75,9 +75,18 @@ def resolve(value: str, base: Path) -> Path:
 
 
 def discover(config: dict[str, Any], base: Path) -> list[Path]:
-    """Every git worktree named explicitly or found under a configured root."""
+    """Every git worktree named explicitly or found under a configured root.
+
+    Repositories are excluded by NAME, not by path glob. CI checks this
+    project out into a directory that repeats the repository name --
+    /home/runner/work/cv-engine/cv-engine -- so a pattern like
+    "**/cv-engine/**" intended to stop the CV repo mining itself instead
+    matched every repository cloned beneath it, and collection silently
+    returned nothing.
+    """
     repos: set[Path] = set()
     patterns = DEFAULT_EXCLUDES + list(config.get("exclude_patterns", []))
+    by_name = set(config.get("exclude_repos", []))
     max_depth = int(config.get("max_discovery_depth", 3))
 
     for raw in config.get("repositories", []):
@@ -103,7 +112,7 @@ def discover(config: dict[str, Any], base: Path) -> list[Path]:
             depth = len(here.parts) - root_depth
             dirs[:] = [d for d in dirs
                        if depth < max_depth and not excluded(here / d, patterns)]
-    return sorted(repos)
+    return sorted(r for r in repos if r.name not in by_name)
 
 
 def claimed_shas(content_dir: Path) -> set[tuple[str, str]]:

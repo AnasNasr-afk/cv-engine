@@ -14,11 +14,7 @@
     "**/Pods/**",
     "**/build/**",
     "**/DerivedData/**",
-    "**/Projects/landing-page-generator/**",
-    "**/hello_open_source",
-    "**/hello_open_source/**",
-    "**/cv-engine",
-    "**/cv-engine/**"
+    "**/Projects/landing-page-generator/**"
   ],
   "author_patterns": [
     "anas\\.nasr132003@gmail\\.com",
@@ -66,5 +62,9 @@
     "AnasNasr-afk/sound-sCool",
     "Mahm0udbakir/google_hackthon_savesavey",
     "Sherlemious/CursorBuildathon"
+  ],
+  "exclude_repos": [
+    "cv-engine",
+    "hello_open_source"
   ]
 }
