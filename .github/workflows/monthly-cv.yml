@@ -64,7 +64,9 @@ jobs:
       - name: Fetch tracked repositories
         env:
           GH_TOKEN: ${{ secrets.EVIDENCE_TOKEN }}
-        run: python3 scripts/fetch_repos.py --into _evidence
+        # --full, not blobless: numstat and the drafting diffs both need
+        # file contents, and a lazy fetch mid-run has no credentials.
+        run: python3 scripts/fetch_repos.py --into _evidence --full
 
       - name: Collect the month's work
         run: |

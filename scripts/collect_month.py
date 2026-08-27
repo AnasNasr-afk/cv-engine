@@ -169,7 +169,16 @@ def describe(repo: Path, sha: str) -> dict[str, Any] | None:
         return None
 
     files: list[dict[str, Any]] = []
-    for line in git(repo, "show", "--numstat", "--format=", "--no-renames", sha, "--").splitlines():
+    stats = subprocess.run(
+        ["git", "-C", str(repo), "show", "--numstat", "--format=", "--no-renames", sha, "--"],
+        text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+    )
+    # A blobless clone whose lazy fetch fails returns nothing at all, which
+    # would otherwise be indistinguishable from a commit that touched no
+    # files -- and every unit in the month would be silently dropped as
+    # low-signal. Failure must be reported, not inferred away.
+    unreadable = stats.returncode != 0
+    for line in stats.stdout.splitlines():
         cols = line.split("\t", 2)
         if len(cols) != 3:
             continue
@@ -188,7 +197,9 @@ def describe(repo: Path, sha: str) -> dict[str, Any] | None:
     # branch is not a second piece of work, and `git show --numstat` on a
     # merge reports the incoming changes -- which would otherwise double
     # every feature: once for the commit, once for the merge that landed it.
-    if len(parents) > 1:
+    if unreadable:
+        signal, why = "unreadable", "git could not read this commit's diffstat"
+    elif len(parents) > 1:
         signal, why = "low", "merge commit"
     elif files and all(generated_path(f["path"]) for f in files):
         signal, why = "low", "only generated or lockfile paths"
@@ -321,13 +332,17 @@ def main() -> int:
     else:
         sys.stdout.write(rendered)
 
+    unreadable = sum(1 for e in report for u in e["units"] if u["signal"] == "unreadable")
+    if unreadable:
+        print(f"\nWARNING: {unreadable} commits could not be read -- clones are "
+              f"probably blobless without credentials.", file=sys.stderr)
     print(f"\n{label}: {total_new} new work units across {len(report)} repos"
           f"  ({total_dupes} duplicates collapsed,"
           f" {total_units - total_new} already on the CV)", file=sys.stderr)
     for entry in report:
         print(f"\n  {entry['repo']}  ({entry['units_new']} new)", file=sys.stderr)
         for unit in entry["units"]:
-            mark = " ·low" if unit["signal"] == "low" else "     "
+            mark = {"low": " ·low", "unreadable": " ·ERR"}.get(unit["signal"], "     ")
             dup = f" ×{unit['duplicate_of_count']}" if unit["duplicate_of_count"] > 1 else ""
             print(f"   {mark} {unit['date']}  +{unit['added']:<5} "
                   f"{unit['subject'][:64]}{dup}", file=sys.stderr)
