@@ -8,11 +8,20 @@ the role's tag weights, keeps the strongest within each section's limits,
 and writes sections/*.tex. Those files are build output, not source --
 edit content/ and roles/ instead.
 
-Scoring: a bullet's score is its own `weight` multiplied by the product of
+Scoring: a bullet's score is its `weight` scaled by the geometric mean of
 the role `boost` for each of its tags. Tags the role does not mention
 default to 1.0, so an untagged bullet keeps its base weight rather than
-vanishing. An entry (job/project) scores as its own weight times the mean
-of its kept bullets, which is what orders the entries on the page.
+vanishing. An entry (job/project) blends its own score with the mean of
+its kept bullets additively, at 60/40.
+
+Both choices exist to stop tag-count from dominating substance: a plain
+product is exponential in the number of tags, and multiplying an entry by
+its bullets applies the same role weighting twice.
+
+Ordering: projects and leadership are ranked by score; experience is not.
+Jobs stay in authored (reverse-chronological) order, because moving a
+current employer below an older one is what a CV reader treats as a red
+flag. Relevance shows up in which bullets survive inside each job.
 
 `--budget` trims the lowest-scoring bullets until at most N remain across
 the whole document. The Makefile uses it to fit one page automatically.
@@ -22,6 +31,7 @@ from __future__ import annotations
 
 import argparse
 import math
+import re
 import sys
 import tomllib
 from pathlib import Path
@@ -106,37 +116,69 @@ def rank_entries(
     return ranked
 
 
+#: Sections the budget will never take a bullet from.
+PROTECTED_SECTIONS = frozenset({"education"})
+
+
 def apply_budget(sections: dict[str, list[dict[str, Any]]], budget: int | None) -> int:
     """Drop the globally lowest-scoring bullets until `budget` remain.
 
-    Experience bullets are protected below two per job -- a job with a
-    single line reads as filler, so the budget takes from elsewhere first.
+    `budget` counts every bullet in the document, so it matches the total
+    the renderer reports. Two protections apply: education is never
+    trimmed, and no job is taken below two bullets -- a job showing a
+    single line reads as filler, so the budget takes from projects and
+    extras first.
     """
     if budget is None:
         return 0
-    pool: list[tuple[float, str, dict[str, Any], list]] = []
+    pool: list[tuple[float, str, int, list]] = []
     for name, entries in sections.items():
         for entry in entries:
-            for bullet in entry["_bullets"]:
-                pool.append((bullet["_score"], name, bullet, entry["_bullets"]))
+            siblings = entry["_bullets"]
+            for position, bullet in enumerate(siblings):
+                pool.append((bullet["_score"], name, id(bullet), siblings))
+
     dropped = 0
     while len(pool) > budget:
         pool.sort(key=lambda row: row[0])
-        for index, (_, name, bullet, siblings) in enumerate(pool):
+        for index, (_, name, ident, siblings) in enumerate(pool):
+            if name in PROTECTED_SECTIONS:
+                continue
             if name == "experience" and len(siblings) <= 2:
                 continue
-            siblings.remove(bullet)
+            # Remove by identity: two bullets can compare equal as dicts,
+            # and list.remove() would then delete the wrong one.
+            for position, candidate in enumerate(siblings):
+                if id(candidate) == ident:
+                    del siblings[position]
+                    break
             pool.pop(index)
             dropped += 1
             break
         else:
-            break
+            break  # everything left is protected
     return dropped
 
 
 # --------------------------------------------------------------------- #
 # LaTeX emission
 # --------------------------------------------------------------------- #
+
+BARE_PERCENT = re.compile(r"(?<!\\)%")
+
+
+def tex(value: Any) -> str:
+    """Emit authored text safely.
+
+    Content is authored as LaTeX -- \\textbf{...} and friends are intended
+    -- so this deliberately does not escape backslashes or braces. It only
+    fixes the one character that is silently destructive: an unescaped `%`
+    starts a LaTeX comment, so "cut load by 40% and shipped it" swallows
+    the rest of the line including the closing brace. Percentages are
+    common on a CV and nobody expects to escape them by hand.
+    """
+    return BARE_PERCENT.sub(r"\\%", str(value))
+
 
 def esc_url(url: str) -> str:
     return url.replace("%", r"\%").replace("#", r"\#")
@@ -150,11 +192,11 @@ def render_heading(profile: dict[str, Any], role: str) -> str:
     return (
         GENERATED_HEADER.format(role=role)
         + "\\begin{center}\n"
-        f"  {{\\Huge \\scshape {profile['name']}}} \\\\[4pt]\n"
+        f"  {{\\Huge \\scshape {tex(profile['name'])}}} \\\\[4pt]\n"
         "  \\footnotesize\n"
-        f"  {profile['location']} $\\cdot$\n"
+        f"  {tex(profile['location'])} $\\cdot$\n"
         f"  \\underline{{\\href{{mailto:{profile['email']}}}{{{profile['email']}}}}} $\\cdot$\n"
-        f"  {profile['phone']} \\\\[2pt]\n"
+        f"  {tex(profile['phone'])} \\\\[2pt]\n"
         f"  {links}\n"
         "\\end{center}\n"
         "\\vspace{-11pt}\n"
@@ -167,12 +209,12 @@ def render_subheading_section(title: str, entries: list[dict[str, Any]], role: s
            "\\resumeSubHeadingListStart", ""]
     for entry in entries:
         out.append("  \\resumeSubheading")
-        out.append(f"    {{{entry['org']}}}{{{entry['location']}}}")
-        out.append(f"    {{{entry['role']}}}{{{entry['dates']}}}")
+        out.append(f"    {{{tex(entry['org'])}}}{{{tex(entry['location'])}}}")
+        out.append(f"    {{{tex(entry['role'])}}}{{{tex(entry['dates'])}}}")
         if entry["_bullets"]:
             out.append("  \\resumeItemListStart")
             for bullet in entry["_bullets"]:
-                out.append(f"    \\resumeItem{{{bullet['text']}}}")
+                out.append(f"    \\resumeItem{{{tex(bullet['text'])}}}")
             out.append("  \\resumeItemListEnd")
         out.append("")
     out.append("\\resumeSubHeadingListEnd")
@@ -188,14 +230,14 @@ def render_projects(entries: list[dict[str, Any]], role: str) -> str:
             f"\\underline{{\\href{{{esc_url(l['url'])}}}{{{l['label']}}}}}"
             for l in entry.get("links", [])
         )
-        stack = f" $|$ \\textit{{{entry['stack']}}}" if entry.get("stack") else ""
+        stack = f" $|$ \\textit{{{tex(entry['stack'])}}}" if entry.get("stack") else ""
         out.append("\\resumeProjectHeading")
-        out.append(f"  {{{entry['name']}{stack}}}")
+        out.append(f"  {{{tex(entry['name'])}{stack}}}")
         out.append(f"  {{{links}}}")
         if entry["_bullets"]:
             out.append("\\resumeItemListStart")
             for bullet in entry["_bullets"]:
-                out.append(f"  \\resumeItem{{{bullet['text']}}}")
+                out.append(f"  \\resumeItem{{{tex(bullet['text'])}}}")
             out.append("\\resumeItemListEnd")
         if index != len(entries) - 1:
             out.append("\\vspace{-12pt}")
@@ -209,7 +251,7 @@ def render_skills(categories: list[dict[str, Any]], role: str) -> str:
     lines = []
     for index, cat in enumerate(categories):
         sep = " \\\\[1mm]" if index != len(categories) - 1 else ""
-        lines.append(f"    \\textbf{{{cat['label']}}}{{: {cat['items']}}}{sep}")
+        lines.append(f"    \\textbf{{{tex(cat['label'])}}}{{: {tex(cat['items'])}}}{sep}")
     return (
         GENERATED_HEADER.format(role=role)
         + "\\section{Technical Skills}\n"
@@ -225,12 +267,12 @@ def render_leadership(entries: list[dict[str, Any]], role: str) -> str:
            "\\vspace{-4pt}", "\\resumeSubHeadingListStart", ""]
     for entry in entries:
         out.append("  \\resumeProjectHeading")
-        out.append(f"    {{{entry['name']}}}")
-        out.append(f"    {{{entry['dates']}}}")
+        out.append(f"    {{{tex(entry['name'])}}}")
+        out.append(f"    {{{tex(entry['dates'])}}}")
         if entry["_bullets"]:
             out.append("  \\resumeItemListStart")
             for bullet in entry["_bullets"]:
-                out.append(f"    \\resumeItem{{{bullet['text']}}}")
+                out.append(f"    \\resumeItem{{{tex(bullet['text'])}}}")
             out.append("  \\resumeItemListEnd")
         out.append("")
     out.append("\\resumeSubHeadingListEnd")
@@ -280,7 +322,8 @@ def main() -> int:
     skl = sorted(skills, key=lambda c: -score_of(c, boost))[: limits.get("skills_max", 5)]
 
     dropped = apply_budget(
-        {"experience": exp, "projects": prj, "leadership": ldr}, args.budget
+        {"education": edu, "experience": exp, "projects": prj, "leadership": ldr},
+        args.budget,
     )
 
     SECTIONS.mkdir(exist_ok=True)

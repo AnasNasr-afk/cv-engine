@@ -4,7 +4,7 @@
 #   make ROLE=flutter open     build it and open the PDF
 #   make all-roles             build every role at once
 #   make explain ROLE=ios      show why each bullet was kept or dropped
-#   make audit                 list claims with no supporting evidence
+#   make audit                 unevidenced claims + verify every repo@sha
 #   make fit ROLE=ios          auto-trim bullets until it fits one page
 #   make roles                 list available roles
 #   make watch ROLE=ios        rebuild on every save
@@ -53,8 +53,10 @@ $(DIST): render $(MAIN) styles/resume.sty
 open: all
 	@open $(DIST)
 
-watch: render
-	$(LATEXMK) -pvc $(MAIN)
+# latexmk -pvc only watches files LaTeX reads, so it would miss every
+# edit to content/*.toml. watch.py polls the real inputs instead.
+watch:
+	@python3 -u scripts/watch.py --role $(ROLE)
 
 explain:
 	@python3 scripts/render.py --role $(ROLE) --explain
@@ -74,7 +76,7 @@ all-roles:
 
 # Every claim with no evidence reference behind it.
 audit:
-	@python3 scripts/audit.py
+	@python3 scripts/audit.py --verify
 
 # Rebuild with progressively fewer bullets until the PDF is one page.
 fit:
