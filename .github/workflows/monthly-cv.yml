@@ -144,6 +144,24 @@ jobs:
           rm -rf _evidence digest.json proposals.json .git-askpass.sh
           git config user.name  "cv-engine"
           git config user.email "noreply@github.com"
+          # Give --force-with-lease something to compare against. The runner
+          # only checked out main, so without this fetch there is no
+          # remote-tracking ref for the branch and the push is refused as
+          # "stale info" whenever the branch already exists.
+          git fetch -q origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" 2>/dev/null || true
+
+          # Re-running a month regenerates the branch, which would discard any
+          # commits pushed to the PR by hand. Only overwrite work this
+          # workflow authored itself.
+          if git rev-parse --verify -q "refs/remotes/origin/$BRANCH" >/dev/null; then
+            LAST=$(git log -1 --format=%an "refs/remotes/origin/$BRANCH")
+            if [ "$LAST" != "cv-engine" ]; then
+              echo "Branch $BRANCH carries commits by $LAST — refusing to overwrite."
+              echo "Close the existing PR, or delete the branch, then re-run."
+              exit 0
+            fi
+          fi
+
           git checkout -B "$BRANCH"
           git add -A content previews DRAFT.md 2>/dev/null || true
           if git diff --cached --quiet; then
