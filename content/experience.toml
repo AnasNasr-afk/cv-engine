@@ -26,11 +26,20 @@ weight   = 10
   weight   = 8
   evidence = []
 
+  # fe-reels is the React/TypeScript web client (Vite, nginx, Docker) --
+  # not the iOS app. Tagged web accordingly, despite sitting under an iOS
+  # job title, so role targeting sends it to the right CV.
   [[entry.bullets]]
   text     = "Made playback stream in chunks instead of preloading whole files, and added \\textbf{Amplitude} events to track engagement on the feed"
-  tags     = ["ios", "performance", "media", "analytics"]
+  tags     = ["web", "typescript", "react", "performance", "media", "analytics"]
   weight   = 8
-  evidence = ["4SaleTech/fe-reels#24", "4SaleTech/fe-reels#36"]
+  evidence = [
+    "fe-reels@88dec0f",
+    "fe-reels@0a882eb",
+    "fe-reels@e10f660",
+    "fe-reels@cab2258",
+    "fe-reels@d09e8b9",
+  ]
 
   [[entry.bullets]]
   text     = "Ported the feed to a \\textbf{server-driven UI} component. iOS and Android render layout the backend sends, so the team changes it without an app release"
