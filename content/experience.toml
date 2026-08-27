@@ -69,6 +69,20 @@ weight   = 10
   weight   = 6
   evidence = ["4SaleTech/landing-page-generator#7", "4SaleTech/landing-page-generator#9"]
 
+  [[entry.bullets]]
+  id       = "landing-page-builder"
+  text     = "Built a drag-and-drop landing-page builder featuring a staging Blocks tab, Pages, and horizontal/vertical containers, with listings cards matching 4Sale's design plus customizable colors, backgrounds, and text styling."
+  tags     = ["web", "react", "ui"]
+  weight   = 6
+  evidence = [
+    "landing-page-generator@7f41416",
+    "landing-page-generator@3bf9318",
+    "landing-page-generator@eda09e7",
+    "landing-page-generator@a2c4689",
+    "landing-page-generator@7747789",
+    "landing-page-generator@1229526",
+  ]
+
 [[entry]]
 org      = "Banque Misr"
 location = "Fifth Settlement, Cairo"
