@@ -178,7 +178,11 @@ jobs:
             if [ -f DRAFT.md ]; then sed -n '1,400p' DRAFT.md; fi
           } > pr-body.md
 
-          if gh pr view "$BRANCH" --json number >/dev/null 2>&1; then
+          # Must match only an OPEN pull request. `gh pr view` also finds
+          # closed ones, so after a closed PR for the same month this took
+          # the edit path and quietly updated the closed PR instead of
+          # opening a new one -- the branch existed and nothing appeared.
+          if [ -n "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')" ]; then
             gh pr edit "$BRANCH" --body-file pr-body.md
           else
             gh pr create --base main --head "$BRANCH" \

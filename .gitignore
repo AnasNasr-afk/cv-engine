@@ -27,3 +27,5 @@ build/
 DRAFT.md
 DRAFT.json
 _evidence/
+__pycache__/
+*.pyc
