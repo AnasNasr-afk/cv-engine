@@ -217,6 +217,16 @@ def describe_units(repos: dict[str, Path], items: list[dict[str, Any]]) -> str:
     return "\n\n".join(blocks)
 
 
+#: Credentials arrive through CI secrets, where a value copied from a
+#: wrapped terminal keeps its line break. Claude Code then rejects it as an
+#: invalid Authorization header, which reads like a bad token rather than a
+#: bad paste. Strip them once, at the point of use.
+for _var in ("CLAUDE_CODE_OAUTH_TOKEN", "ANTHROPIC_API_KEY"):
+    _value = os.environ.get(_var)
+    if _value and _value.strip() != _value.replace("\n", "").replace("\r", ""):
+        os.environ[_var] = "".join(_value.split())
+
+
 def ask_claude(prompt: str) -> dict[str, Any] | None:
     if not shutil.which("claude"):
         print("  claude CLI not found — brief only", file=sys.stderr)
