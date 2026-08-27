@@ -98,6 +98,10 @@ jobs:
       - name: Draft and apply thread rewrites
         if: steps.gate.outputs.proceed == 'true'
         env:
+          # Either credential works. CLAUDE_CODE_OAUTH_TOKEN draws on a Claude
+          # subscription (generate with `claude setup-token`); ANTHROPIC_API_KEY
+          # bills API credits, which a Pro subscription does not fund.
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           # Drafting is the only step allowed to fail without failing the
