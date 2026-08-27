@@ -529,7 +529,10 @@ def main() -> int:
                        encoding="utf-8")
     print(f"\nwrote {args.output.name} and {drafted.name}", file=sys.stderr)
 
-    if args.apply and results:
+    # New threads must be applied even when nothing was rewritten. A month
+    # of entirely new work produces zero rewrites, and gating on `results`
+    # alone reported "nothing to apply" while discarding every new bullet.
+    if args.apply and (results or new_threads):
         applied = 0
         for item in results:
             if apply_rewrite(item["thread"], item["text"], item["evidence"]):
