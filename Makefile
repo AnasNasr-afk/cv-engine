@@ -8,6 +8,8 @@
 #   make fit ROLE=ios          auto-trim bullets until it fits one page
 #   make roles                 list available roles
 #   make watch ROLE=ios        rebuild on every save
+#   make verify MONTH=2026-08  check the monthly loop behaves as designed
+#   make month  MONTH=2026-08  rehearse a month locally, no PR, no changes
 #   make clean
 #
 # Roles live in roles/*.toml. Content lives in content/*.toml.
@@ -33,7 +35,7 @@ DIST     := $(OUTDIR)/$(OUTNAME)
 CONTENT  := $(wildcard content/*.toml) $(wildcard roles/*.toml) scripts/render.py
 LATEXMK  := $(LATEXMK_BIN) -pdf -interaction=nonstopmode -file-line-error -synctex=1 -outdir=$(OUTDIR)
 
-.PHONY: all render open watch explain audit fit roles all-roles check clean
+.PHONY: all render open watch explain audit fit roles all-roles check clean verify month
 
 all: $(DIST)
 
@@ -90,6 +92,17 @@ check: all
 	print(f'role=$(ROLE)  pages={p}  overfull={o}');\
 	print('OK - fits one page' if p==1 else f'TOO LONG - {p} pages, run: make fit ROLE=$(ROLE)');\
 	raise SystemExit(0 if p==1 else 1)"
+
+verify:
+	@python3 scripts/verify_loop.py --month $(MONTH)
+
+# Rehearse what the monthly workflow would propose, without touching
+# content/ and without opening anything.
+month:
+	@python3 scripts/collect_month.py --month $(MONTH) --output /tmp/cv-digest.json
+	@python3 scripts/propose.py --digest /tmp/cv-digest.json --output /tmp/cv-proposals.json
+	@python3 scripts/draft.py --proposals /tmp/cv-proposals.json --output /tmp/DRAFT-$(MONTH).md
+	@echo; echo "review: /tmp/DRAFT-$(MONTH).md"
 
 clean:
 	@$(LATEXMK) -C $(MAIN) >/dev/null 2>&1 || true
