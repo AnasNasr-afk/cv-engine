@@ -1,0 +1,31 @@
+# General Software Engineer -- deliberately flat weighting. This role
+# rewards breadth, so nothing is suppressed hard; architecture, delivery
+# and leadership signals lead instead of any single platform.
+
+name  = "Software Engineer"
+label = "software"
+
+[boost]
+architecture = 1.8
+backend      = 1.4
+performance  = 1.4
+security     = 1.4
+leadership   = 1.4
+industry     = 1.4
+shipped      = 1.3
+ai           = 1.2
+core         = 1.2
+ios          = 1.1
+flutter      = 1.1
+web          = 1.1
+mobile       = 1.0
+
+[sections]
+order = ["education", "experience", "skills", "projects", "leadership"]
+
+[limits]
+experience_bullets_max = 4
+projects_max           = 4
+project_bullets_max    = 1
+skills_max             = 5
+leadership_max         = 2

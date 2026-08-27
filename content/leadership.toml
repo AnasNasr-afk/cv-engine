@@ -1,0 +1,26 @@
+# Leadership & community. Rendered with the compact one-line heading
+# style (name on the left, dates on the right).
+
+[[entry]]
+name   = "\\textbf{GDG Al-Azhar --- Vice Head, Flutter Chapter}"
+dates  = "Oct 2025 -- May 2026"
+tags   = ["leadership", "flutter", "community"]
+weight = 8
+
+  [[entry.bullets]]
+  text     = "Ran workshops on \\textbf{BLoC}, \\textbf{Cubit}, and clean architecture for 8 developers, and wrote the chapter's curriculum"
+  tags     = ["leadership", "flutter", "teaching"]
+  weight   = 8
+  evidence = []
+
+[[entry]]
+name   = "\\textbf{Open Source} --- AOSSIE NeuroTrack"
+dates  = "Mar 2026"
+tags   = ["opensource", "flutter", "community"]
+weight = 5
+
+  [[entry.bullets]]
+  text     = "Replaced discarded \\texttt{Provider.of} calls with \\texttt{context.watch} and refactored navigation in the auth flow"
+  tags     = ["opensource", "flutter", "dart"]
+  weight   = 5
+  evidence = ["NeuroTrack@f51f8f0", "NeuroTrack@8e81af6"]

@@ -1,0 +1,19 @@
+# Identity block. Rendered into sections/heading.tex for every role.
+# `headline` is optional per-role flavour text; leave empty to omit.
+
+name     = "Anas Nasr Mostafa"
+location = "Cairo, Egypt"
+email    = "anmostafa03@gmail.com"
+phone    = "+20 102-479-3905"
+
+[[links]]
+label = "anasnasr.vercel.app"
+url   = "https://anasnasr.vercel.app"
+
+[[links]]
+label = "github.com/AnasNasr-afk"
+url   = "https://github.com/AnasNasr-afk"
+
+[[links]]
+label = "linkedin.com/in/anasnasr"
+url   = "https://linkedin.com/in/anasnasr"

@@ -1,12 +1,15 @@
 %===============================================================
-% Anas Nasr Mostafa -- CV
+% Anas Nasr Mostafa -- role-targeted CV
 %
-% Build:  latexmk -pdf -outdir=build main.tex
-% Engine: pdfLaTeX (uses \pdfgentounicode for ATS-readable output)
+% Build:  make ROLE=ios        (or flutter / web / software)
 %
-% Layout, packages and the \resume* commands live in styles/resume.sty.
-% Content lives in sections/ and is included in the order below --
-% reordering these \input lines reorders the CV.
+% This file is deliberately thin. Everything below \begin{document}
+% is generated: scripts/render.py reads content/*.toml, scores each
+% bullet against roles/<role>.toml, and writes sections/*.tex plus
+% sections/order.tex, which fixes the section order for that role.
+%
+% Do not edit sections/ -- it is build output. Edit content/ or roles/.
+% Layout and the \resume* commands live in styles/resume.sty.
 %===============================================================
 \documentclass[letterpaper,10pt]{article}
 
@@ -14,16 +17,6 @@
 
 \begin{document}
 
-\input{sections/heading}
-
-\input{sections/education}
-
-\input{sections/experience}
-
-\input{sections/skills}
-
-\input{sections/projects}
-
-\input{sections/leadership}
+\input{sections/order}
 
 \end{document}

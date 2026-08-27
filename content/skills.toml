@@ -1,0 +1,35 @@
+# Skill categories. Roles reorder these by tag score and can drop the
+# lowest-ranked ones entirely when space is tight.
+#
+# Keep `items` ordered most-relevant-first within each category; the
+# renderer does not reorder inside a line.
+
+[[category]]
+label  = "Languages"
+items  = "Swift, Dart, TypeScript / JavaScript, C\\#, Java, Python"
+tags   = ["ios", "flutter", "web", "core"]
+weight = 10
+
+[[category]]
+label  = "iOS"
+items  = "SwiftUI, UIKit, Combine, Core Data, Server-Driven UI, Xcode Instruments, Fastlane, TestFlight"
+tags   = ["ios", "swift", "mobile"]
+weight = 9
+
+[[category]]
+label  = "Flutter"
+items  = "BLoC, Cubit, Provider, Dio, Firebase, Google Maps, ML Kit, Clean Architecture, Deep Linking"
+tags   = ["flutter", "dart", "mobile"]
+weight = 9
+
+[[category]]
+label  = "Backend \\& Web"
+items  = "ASP.NET Core, REST APIs, React, Vite, SQL Server, Firestore, Supabase, Elasticsearch"
+tags   = ["web", "backend", "react", "typescript"]
+weight = 7
+
+[[category]]
+label  = "Cloud \\& Tools"
+items  = "AWS (Cloud Practitioner, S3, ECR, EKS), Docker, Kubernetes, GitHub Actions, Amplitude, Git, Jira"
+tags   = ["cloud", "devops", "core"]
+weight = 7

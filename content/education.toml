@@ -1,0 +1,13 @@
+[[entry]]
+org      = "Future University in Egypt"
+location = "New Cairo, Cairo"
+role     = "B.Sc. Computer Science"
+dates    = "Oct 2022 -- Jun 2026"
+tags     = ["core"]
+weight   = 10
+
+  [[entry.bullets]]
+  text     = "Graduation Project: \\textit{InsideOut} --- Grade: \\textbf{A} (both phases). Coursework: Data Structures \\& Algorithms, OOP, Operating Systems"
+  tags     = ["core", "academic"]
+  weight   = 8
+  evidence = ["inside-out@63-commits"]

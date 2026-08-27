@@ -1,0 +1,96 @@
+# Projects. Roles pick the top N by score, so keep more here than fit on
+# one page -- that is the point. A Flutter role surfaces the Flutter work;
+# a web role surfaces RASM and the landing-page builder.
+#
+# `links` render right-aligned on the heading line.
+
+[[entry]]
+name   = "RASM --- Cursor Build-a-thon, \\textbf{3rd Place}"
+stack  = "Next.js, TypeScript, Postgres, Drizzle"
+tags   = ["web", "typescript", "react", "backend", "award"]
+weight = 9
+links  = [
+  { label = "Live",   url = "https://team-8-rasma.vercel.app/" },
+  { label = "GitHub", url = "https://github.com/Sherlemious/CursorBuildathon" },
+]
+
+  [[entry.bullets]]
+  text     = "Commission workflow for freelance artists, built in 4 hours. \\textbf{Paymob} checkout, with order state coming from HMAC-verified webhooks rather than the browser redirect"
+  tags     = ["web", "backend", "security", "payments"]
+  weight   = 9
+  evidence = ["CursorBuildathon@7-commits"]
+
+[[entry]]
+name   = "InsideOut --- Graduation Project"
+stack  = "Flutter, Firebase, SendBird"
+tags   = ["flutter", "dart", "mobile", "leadership", "academic"]
+weight = 10
+links  = [{ label = "GitHub", url = "https://github.com/AnasNasr-afk/inside-out" }]
+
+  [[entry.bullets]]
+  text     = "Led the team and wrote the \\textbf{Flutter} client. Integrated \\textbf{DOOBY}, an AI speech avatar, and \\textbf{SendBird} chat between specialists and parents"
+  tags     = ["flutter", "leadership", "ai", "realtime"]
+  weight   = 9
+  evidence = ["inside-out@63-commits", "AnasNasr-afk/inside-out#22-prs"]
+
+[[entry]]
+name   = "Sound'sCool"
+stack  = "Flutter, Gemini STT, Firebase"
+tags   = ["flutter", "dart", "mobile", "ai", "shipped"]
+weight = 8
+links  = [
+  { label = "PlayStore", url = "https://play.google.com/store/apps/details?id=com.anasnasr.soundscool" },
+  { label = "GitHub",    url = "https://github.com/AnasNasr-afk/sound-sCool" },
+]
+
+  [[entry.bullets]]
+  text     = "Scores pronunciation word by word from \\textbf{Gemini Speech-to-Text}, about 2 seconds per attempt. On \\textbf{iOS and Android}"
+  tags     = ["flutter", "ai", "mobile", "ios"]
+  weight   = 8
+  evidence = ["sound-sCool@51-commits", "AnasNasr-afk/sound-sCool#21-prs"]
+
+[[entry]]
+name   = "CairoCrew"
+stack  = "Flutter, Google Maps, Firebase"
+tags   = ["flutter", "dart", "mobile", "shipped"]
+weight = 7
+links  = [
+  { label = "PlayStore", url = "https://play.google.com/store/apps/details?id=com.anasnasr.cairocrew" },
+  { label = "GitHub",    url = "https://github.com/AnasNasr-afk/flutter_maps" },
+]
+
+  [[entry.bullets]]
+  text     = "Citizens report and track local infrastructure problems on a live \\textbf{Google Maps} view. Separate admin and citizen roles"
+  tags     = ["flutter", "maps", "mobile"]
+  weight   = 7
+  evidence = ["flutter_maps@46-commits", "AnasNasr-afk/flutter_maps#20-prs"]
+
+# --- Below the fold on most roles, but available when they rank higher ---
+
+[[entry]]
+name   = "SaveSavey --- Google Hackathon"
+stack  = "Flutter, Firebase"
+tags   = ["flutter", "dart", "mobile", "collaboration"]
+weight = 6
+links  = [{ label = "GitHub", url = "https://github.com/Mahm0udbakir/google_hackthon_savesavey" }]
+
+  [[entry.bullets]]
+  text     = "Team hackathon build; contributed 47 commits across 18 merged pull requests"
+  tags     = ["flutter", "collaboration"]
+  weight   = 6
+  evidence = ["google_hackthon_savesavey@47-commits"]
+
+[[entry]]
+name   = "SwiftUI Social Feed"
+stack  = "Swift, SwiftUI"
+tags   = ["ios", "swift", "ui"]
+# 6 commits, no PRs -- a learning exercise, not a shipped product.
+# Relevant to an iOS role, but it must not outrank substantial work.
+weight = 4
+links  = [{ label = "GitHub", url = "https://github.com/AnasNasr-afk/SwiftUI-Social-Feed" }]
+
+  [[entry.bullets]]
+  text     = "Social feed built in \\textbf{SwiftUI}, exercising list virtualisation and async image loading"
+  tags     = ["ios", "swift", "ui", "performance"]
+  weight   = 4
+  evidence = ["SwiftUI-Social-Feed@6-commits"]

@@ -1,24 +1,31 @@
 {
   "version": 1,
-  "repositories": [
-    "../landing-page-generator"
+  "repository_roots": [
+    "../../career-evidence"
   ],
-  "repository_roots": [],
+  "repositories": [
+    "../fe-reels"
+  ],
   "exclude_patterns": [
     "**/node_modules/**",
     "**/vendor/**",
     "**/.cache/**",
     "**/Pods/**",
     "**/build/**",
-    "**/DerivedData/**"
+    "**/DerivedData/**",
+    "**/Projects/landing-page-generator/**",
+    "**/hello_open_source",
+    "**/hello_open_source/**",
+    "**/fe-ios-4sale-swiftui",
+    "**/fe-ios-4sale-swiftui/**"
   ],
   "author_patterns": [
     "anas\\.nasr132003@gmail\\.com",
     "anmostafa03@gmail\\.com",
     "^Anas Nasr <"
   ],
-  "max_discovery_depth": 3,
-  "max_commits_per_repo": 50,
+  "max_discovery_depth": 2,
+  "max_commits_per_repo": 2000,
   "target_roles": [
     "iOS Engineer",
     "Flutter/Mobile Engineer"

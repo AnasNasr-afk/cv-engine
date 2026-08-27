@@ -1,0 +1,102 @@
+# Work experience.
+#
+# Each [[entry]] is a job. Each [[entry.bullets]] is one achievement line.
+#
+#   tags      what kind of work this is. Roles boost/suppress by tag.
+#   weight    your own 0-10 sense of how strong the bullet is, before
+#             the role multiplier is applied.
+#   evidence  commit / PR references backing the claim. Empty means the
+#             claim is currently unverified -- `make audit` reports these.
+#
+# Text is preserved verbatim from the Overleaf CV. Nothing here has been
+# rewritten. See `make audit` for where the evidence supports more than
+# the wording currently claims.
+
+[[entry]]
+org      = "4Sale International Co."
+location = "Zamalek, Cairo"
+role     = "iOS Developer Intern"
+dates    = "July 2026 -- Present"
+tags     = ["ios", "mobile", "industry"]
+weight   = 10
+
+  [[entry.bullets]]
+  text     = "Built the seller video upload flow for \\textbf{4Sale Reels}, the short-form feed on 4Sale's marketplace: presigned \\textbf{S3} uploads into the listing media pipeline"
+  tags     = ["ios", "media", "aws", "backend"]
+  weight   = 8
+  evidence = []
+
+  [[entry.bullets]]
+  text     = "Made playback stream in chunks instead of preloading whole files, and added \\textbf{Amplitude} events to track engagement on the feed"
+  tags     = ["ios", "performance", "media", "analytics"]
+  weight   = 8
+  evidence = ["4SaleTech/fe-reels#24", "4SaleTech/fe-reels#36"]
+
+  [[entry.bullets]]
+  text     = "Ported the feed to a \\textbf{server-driven UI} component. iOS and Android render layout the backend sends, so the team changes it without an app release"
+  tags     = ["ios", "architecture", "sdui"]
+  weight   = 9
+  evidence = []
+
+  [[entry.bullets]]
+  text     = "Wrote three versions of a save-search reminder in the iOS app and \\textbf{A/B tested} them to pick the winner"
+  tags     = ["ios", "swift", "experimentation", "architecture"]
+  weight   = 9
+  evidence = [
+    "fe-ios-4sale-swiftui@a832dec",
+    "fe-ios-4sale-swiftui@854b229",
+    "fe-ios-4sale-swiftui@318a4c3",
+    "fe-ios-4sale-swiftui@11c3c16",
+  ]
+
+  [[entry.bullets]]
+  text     = "Currently building a drag-and-drop blog editor for the marketing team"
+  tags     = ["web", "react", "typescript"]
+  weight   = 6
+  evidence = ["4SaleTech/landing-page-generator#7", "4SaleTech/landing-page-generator#9"]
+
+[[entry]]
+org      = "Banque Misr"
+location = "Fifth Settlement, Cairo"
+role     = "iOS Developer Intern"
+dates    = "July 2025 -- Aug 2025"
+tags     = ["ios", "mobile", "industry"]
+weight   = 8
+
+  [[entry.bullets]]
+  text     = "Wrote \\textbf{SwiftUI} and \\textbf{UIKit} components across 4 internal iOS apps, reused between screens"
+  tags     = ["ios", "swift", "ui"]
+  weight   = 8
+  evidence = []
+
+  [[entry.bullets]]
+  text     = "Fixed 11+ UI and API bugs, profiling the slow ones with \\textbf{Xcode Instruments}"
+  tags     = ["ios", "performance", "debugging"]
+  weight   = 7
+  evidence = []
+
+  [[entry.bullets]]
+  text     = "Ran sprint planning for a group of 5 interns alongside the senior mentors"
+  tags     = ["leadership", "process"]
+  weight   = 6
+  evidence = []
+
+[[entry]]
+org      = "Hassan Allam Holding"
+location = "Sheraton, Cairo"
+role     = "Flutter Developer Intern"
+dates    = "July 2024 -- Aug 2024"
+tags     = ["flutter", "mobile", "industry"]
+weight   = 7
+
+  [[entry.bullets]]
+  text     = "Set up \\textbf{BLoC/Cubit} state management across several apps to cut unnecessary rebuilds, checked in Flutter DevTools"
+  tags     = ["flutter", "dart", "architecture", "performance"]
+  weight   = 8
+  evidence = []
+
+  [[entry.bullets]]
+  text     = "Prototyped AR features with \\textbf{Vuforia} and wrote the feasibility report that put AR on the roadmap"
+  tags     = ["flutter", "ar", "research"]
+  weight   = 6
+  evidence = []
