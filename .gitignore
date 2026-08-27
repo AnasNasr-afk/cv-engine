@@ -26,3 +26,4 @@ build/
 # The generated resume goes to build/ which is ignored above.
 DRAFT.md
 DRAFT.json
+_evidence/

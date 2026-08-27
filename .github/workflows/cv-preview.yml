@@ -1,0 +1,69 @@
+name: Rebuild CV preview
+
+# Keeps the preview honest while you push back on a proposal.
+#
+# The monthly workflow renders the CV once when it opens the PR. Every
+# commit after that -- rewording a bullet, dropping one, retagging -- would
+# leave the image showing a CV that no longer exists. This rebuilds on each
+# push and updates the image in place.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "content/**"
+      - "roles/**"
+      - "styles/**"
+      - "main.tex"
+      - "scripts/render.py"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install LaTeX and PDF tooling
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            latexmk texlive-latex-base texlive-latex-extra \
+            texlive-fonts-recommended texlive-fonts-extra poppler-utils
+
+      - name: Build every role
+        run: make all-roles
+
+      - name: Fail if the CV no longer fits one page
+        run: make check ROLE=ios
+
+      - name: Report claims that lost their evidence
+        run: python3 scripts/audit.py || true
+
+      - name: Re-render the preview
+        run: |
+          mkdir -p previews
+          pdftoppm -png -r 110 -singlefile \
+            build/Anas_Nasr_Mostafa_CV_ios.pdf previews/cv-ios
+
+      - name: Commit the refreshed preview
+        run: |
+          git config user.name  "cv-engine"
+          git config user.email "noreply@github.com"
+          git add previews
+          if git diff --cached --quiet; then
+            echo "Preview unchanged."; exit 0
+          fi
+          git commit -q -m "Refresh CV preview"
+          git push -q origin HEAD:${{ github.head_ref }}

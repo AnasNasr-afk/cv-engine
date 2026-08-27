@@ -39,6 +39,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parent.parent
 CONTENT = ROOT / "content"
 
+MAX_UNITS_IN_PROMPT = 8
 MAX_FILES_PER_UNIT = 6
 MAX_LINES_PER_FILE = 60
 CALL_TIMEOUT = 240
@@ -154,8 +155,17 @@ def prior_context(repos: dict[str, Path], evidence: list[str]) -> str:
 
 
 def describe_units(repos: dict[str, Path], items: list[dict[str, Any]]) -> str:
+    """Diffs for the largest units, with the rest listed by subject.
+
+    A busy month can attach twenty commits to one thread; including every
+    diff would build a prompt of several thousand lines to rewrite a single
+    sentence. The biggest changes carry the substance, and the remainder
+    still appear by subject so nothing is silently dropped.
+    """
+    ranked = sorted(items, key=lambda i: -i["unit"]["added"])
+    shown, rest = ranked[:MAX_UNITS_IN_PROMPT], ranked[MAX_UNITS_IN_PROMPT:]
     blocks = []
-    for item in items:
+    for item in shown:
         unit = item["unit"]
         repo = repos.get(item["repo"])
         head = (f"* {unit['subject']}\n"
@@ -164,6 +174,9 @@ def describe_units(repos: dict[str, Path], items: list[dict[str, Any]]) -> str:
                 f"  paths: {', '.join(unit['paths'][:8])}")
         body = diff_excerpt(repo, unit["shas"][0]) if repo else "  (repo not found locally)"
         blocks.append(head + "\n" + body)
+    if rest:
+        listed = "\n".join(f"  - {i['unit']['subject']} (+{i['unit']['added']})" for i in rest)
+        blocks.append(f"ALSO ON THIS THREAD, DIFFS OMITTED FOR LENGTH:\n{listed}")
     return "\n\n".join(blocks)
 
 

@@ -1,6 +1,7 @@
 {
   "version": 1,
   "repository_roots": [
+    "_evidence",
     "../../career-evidence"
   ],
   "repositories": [
@@ -34,5 +35,36 @@
   "low_signal_repos": [
     "neetcode-submissions",
     "hello_open_source"
+  ],
+  "github_repos": [
+    "4SaleTech/fe-ios-4sale-swiftui",
+    "4SaleTech/fe-reels",
+    "AnasNasr-afk/AnasNasr-afk",
+    "AnasNasr-afk/Banque-Misr-team1",
+    "AnasNasr-afk/CompanyProject-Solution",
+    "AnasNasr-afk/Human_activity_recognition",
+    "AnasNasr-afk/NeuroTrack",
+    "AnasNasr-afk/Somnia",
+    "AnasNasr-afk/SwiftUI-Social-Feed",
+    "AnasNasr-afk/Task3",
+    "AnasNasr-afk/TaskManager",
+    "AnasNasr-afk/anas-portfolio",
+    "AnasNasr-afk/anas_portfolio",
+    "AnasNasr-afk/course1",
+    "AnasNasr-afk/e_ramo_test",
+    "AnasNasr-afk/escape_maze",
+    "AnasNasr-afk/flutter_maps",
+    "AnasNasr-afk/galsa_trial2",
+    "AnasNasr-afk/inside-out",
+    "AnasNasr-afk/kora_app",
+    "AnasNasr-afk/landing-page-generator",
+    "AnasNasr-afk/neetcode-submissions",
+    "AnasNasr-afk/privacy-policy",
+    "AnasNasr-afk/restaurant_app",
+    "AnasNasr-afk/rickAndMorty",
+    "AnasNasr-afk/social-application",
+    "AnasNasr-afk/sound-sCool",
+    "Mahm0udbakir/google_hackthon_savesavey",
+    "Sherlemious/CursorBuildathon"
   ]
 }

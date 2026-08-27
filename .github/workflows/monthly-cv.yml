@@ -1,0 +1,160 @@
+name: Monthly CV update
+
+# Runs on the 1st of each month, and on demand.
+#
+# Collects the previous month's work across every tracked repository,
+# matches it onto existing CV threads, drafts new wording from the real
+# diffs, rebuilds the PDF, and opens a pull request with a preview image
+# so the whole thing can be reviewed from a phone.
+#
+# Opens nothing when nothing shipped -- an empty PR every month trains you
+# to ignore them.
+
+on:
+  schedule:
+    - cron: "0 6 1 * *"      # 06:00 UTC, first of the month
+  workflow_dispatch:
+    inputs:
+      month:
+        description: "Month to collect (YYYY-MM). Defaults to last month."
+        required: false
+      skip_drafting:
+        description: "Collect and match only, no drafted wording"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out cv-engine
+        uses: actions/checkout@v4
+
+      - name: Work out the collection window
+        id: window
+        run: |
+          MONTH="${{ inputs.month }}"
+          if [ -z "$MONTH" ]; then
+            MONTH=$(date -u -d "last month" +%Y-%m)
+          fi
+          echo "month=$MONTH" >> "$GITHUB_OUTPUT"
+          echo "branch=cv/$MONTH" >> "$GITHUB_OUTPUT"
+          echo "Collecting $MONTH"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install LaTeX and PDF tooling
+        run: |
+          sudo apt-get update -qq
+          # latex-extra carries enumitem/titlesec, fonts-extra carries
+          # marvosym, poppler-utils gives pdftoppm for the preview image.
+          sudo apt-get install -y --no-install-recommends \
+            latexmk texlive-latex-base texlive-latex-extra \
+            texlive-fonts-recommended texlive-fonts-extra poppler-utils
+
+      - name: Fetch tracked repositories
+        env:
+          GH_TOKEN: ${{ secrets.EVIDENCE_TOKEN }}
+        run: python3 scripts/fetch_repos.py --into _evidence
+
+      - name: Collect the month's work
+        run: |
+          python3 scripts/collect_month.py \
+            --month "${{ steps.window.outputs.month }}" \
+            --output digest.json
+
+      - name: Match work onto CV threads
+        run: |
+          python3 scripts/propose.py --digest digest.json --output proposals.json
+
+      - name: Stop early if nothing new shipped
+        id: gate
+        run: |
+          ATTACH=$(python3 -c "import json;print(len(json.load(open('proposals.json'))['attach_to_existing']))")
+          NEW=$(python3 -c "import json;print(len(json.load(open('proposals.json'))['candidate_new_threads']))")
+          echo "attach=$ATTACH new=$NEW"
+          if [ "$ATTACH" -eq 0 ] && [ "$NEW" -eq 0 ]; then
+            echo "proceed=false" >> "$GITHUB_OUTPUT"
+            echo "Nothing to propose for ${{ steps.window.outputs.month }} — no PR."
+          else
+            echo "proceed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install Claude Code
+        if: steps.gate.outputs.proceed == 'true' && !inputs.skip_drafting
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Draft and apply thread rewrites
+        if: steps.gate.outputs.proceed == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          # Drafting is the only step allowed to fail without failing the
+          # run: without it the PR still carries the commits, paths and
+          # diffs, and the wording can be written by hand.
+          if [ "${{ inputs.skip_drafting }}" = "true" ]; then
+            python3 scripts/draft.py --proposals proposals.json --no-claude
+          else
+            python3 scripts/draft.py --proposals proposals.json --apply \
+              || python3 scripts/draft.py --proposals proposals.json --no-claude
+          fi
+
+      - name: Rebuild every role
+        if: steps.gate.outputs.proceed == 'true'
+        run: make all-roles
+
+      - name: Verify the CV still holds together
+        if: steps.gate.outputs.proceed == 'true'
+        run: |
+          make check ROLE=ios
+          python3 scripts/audit.py --verify || true   # broken refs are a warning, not a stop
+
+      - name: Render the preview image
+        if: steps.gate.outputs.proceed == 'true'
+        run: |
+          mkdir -p previews
+          pdftoppm -png -r 110 -singlefile \
+            build/Anas_Nasr_Mostafa_CV_ios.pdf previews/cv-ios
+          ls -l previews/
+
+      - name: Open the pull request
+        if: steps.gate.outputs.proceed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MONTH: ${{ steps.window.outputs.month }}
+          BRANCH: ${{ steps.window.outputs.branch }}
+        run: |
+          set -euo pipefail
+          rm -rf _evidence digest.json proposals.json .git-askpass.sh
+          git config user.name  "cv-engine"
+          git config user.email "noreply@github.com"
+          git checkout -B "$BRANCH"
+          git add -A content previews DRAFT.md 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No content changes to propose."; exit 0
+          fi
+          git commit -q -m "CV update for $MONTH"
+          git push -q --force-with-lease origin "$BRANCH"
+
+          {
+            echo "## Proposed CV — $MONTH"
+            echo
+            echo "![CV preview](https://github.com/${{ github.repository }}/blob/$BRANCH/previews/cv-ios.png?raw=true)"
+            echo
+            if [ -f DRAFT.md ]; then sed -n '1,400p' DRAFT.md; fi
+          } > pr-body.md
+
+          if gh pr view "$BRANCH" --json number >/dev/null 2>&1; then
+            gh pr edit "$BRANCH" --body-file pr-body.md
+          else
+            gh pr create --base main --head "$BRANCH" \
+              --title "CV update — $MONTH" --body-file pr-body.md
+          fi
