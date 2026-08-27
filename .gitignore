@@ -24,3 +24,5 @@ build/
 # Note: *.pdf is deliberately NOT ignored wholesale.
 # If you ever embed a PDF asset, it must stay tracked.
 # The generated resume goes to build/ which is ignored above.
+DRAFT.md
+DRAFT.json

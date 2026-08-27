@@ -215,6 +215,7 @@ def main() -> int:
                 attach.append({
                     "thread": best["id"], "section": best["section"], "owner": best["owner"],
                     "current_text": best["text"], "repo": entry["repo"],
+                    "tags": best["tags"], "thread_evidence": best["evidence"],
                     "unit": unit, "score": round(best_score, 2), "why": best_reasons,
                 })
             else:
