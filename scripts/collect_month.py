@@ -265,11 +265,19 @@ def main() -> int:
     report: list[dict[str, Any]] = []
     total_units = total_new = total_dupes = 0
 
+    low_repos = set(config.get("low_signal_repos", []))
+
     for repo in repos:
         shas = commits_in_window(repo, patterns, since, until)
         if not shas:
             continue
         described = [d for d in (describe(repo, s) for s in shas) if d]
+        if repo.name in low_repos:
+            # Practice, solutions and tutorial repos generate real commits
+            # that say nothing about engineering judgement.
+            for d in described:
+                d["signal"] = "low"
+                d["signal_reason"] = d["signal_reason"] or "repository marked low-signal"
         units = dedupe(described)
         total_dupes += sum(u["duplicate_of_count"] - 1 for u in units)
 

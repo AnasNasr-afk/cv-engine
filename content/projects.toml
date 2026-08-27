@@ -15,6 +15,7 @@ links  = [
 ]
 
   [[entry.bullets]]
+  id       = "rasm-commission-flow"
   text     = "Commission workflow for freelance artists, built in 4 hours. \\textbf{Paymob} checkout, with order state coming from HMAC-verified webhooks rather than the browser redirect"
   tags     = ["web", "backend", "security", "payments"]
   weight   = 9
@@ -28,6 +29,7 @@ weight = 10
 links  = [{ label = "GitHub", url = "https://github.com/AnasNasr-afk/inside-out" }]
 
   [[entry.bullets]]
+  id       = "insideout-client"
   text     = "Led the team and wrote the \\textbf{Flutter} client. Integrated \\textbf{DOOBY}, an AI speech avatar, and \\textbf{SendBird} chat between specialists and parents"
   tags     = ["flutter", "leadership", "ai", "realtime"]
   weight   = 9
@@ -44,6 +46,7 @@ links  = [
 ]
 
   [[entry.bullets]]
+  id       = "soundscool-scoring"
   text     = "Scores pronunciation word by word from \\textbf{Gemini Speech-to-Text}, about 2 seconds per attempt. On \\textbf{iOS and Android}"
   tags     = ["flutter", "ai", "mobile", "ios"]
   weight   = 8
@@ -60,6 +63,7 @@ links  = [
 ]
 
   [[entry.bullets]]
+  id       = "cairocrew-reporting"
   text     = "Citizens report and track local infrastructure problems on a live \\textbf{Google Maps} view. Separate admin and citizen roles"
   tags     = ["flutter", "maps", "mobile"]
   weight   = 7
@@ -75,6 +79,7 @@ weight = 6
 links  = [{ label = "GitHub", url = "https://github.com/Mahm0udbakir/google_hackthon_savesavey" }]
 
   [[entry.bullets]]
+  id       = "savesavey-hackathon"
   text     = "Team hackathon build; contributed 47 commits across 18 merged pull requests"
   tags     = ["flutter", "collaboration"]
   weight   = 6
@@ -90,6 +95,7 @@ weight = 4
 links  = [{ label = "GitHub", url = "https://github.com/AnasNasr-afk/SwiftUI-Social-Feed" }]
 
   [[entry.bullets]]
+  id       = "swiftui-social-feed"
   text     = "Social feed built in \\textbf{SwiftUI}, exercising list virtualisation and async image loading"
   tags     = ["ios", "swift", "ui", "performance"]
   weight   = 4

@@ -30,5 +30,9 @@
     "iOS Engineer",
     "Flutter/Mobile Engineer"
   ],
-  "study_hours_per_week": 5
+  "study_hours_per_week": 5,
+  "low_signal_repos": [
+    "neetcode-submissions",
+    "hello_open_source"
+  ]
 }

@@ -8,6 +8,7 @@ tags   = ["leadership", "flutter", "community"]
 weight = 8
 
   [[entry.bullets]]
+  id       = "gdg-flutter-workshops"
   text     = "Ran workshops on \\textbf{BLoC}, \\textbf{Cubit}, and clean architecture for 8 developers, and wrote the chapter's curriculum"
   tags     = ["leadership", "flutter", "teaching"]
   weight   = 8
@@ -20,6 +21,7 @@ tags   = ["opensource", "flutter", "community"]
 weight = 5
 
   [[entry.bullets]]
+  id       = "oss-neurotrack"
   text     = "Replaced discarded \\texttt{Provider.of} calls with \\texttt{context.watch} and refactored navigation in the auth flow"
   tags     = ["opensource", "flutter", "dart"]
   weight   = 5

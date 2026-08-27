@@ -21,6 +21,7 @@ tags     = ["ios", "mobile", "industry"]
 weight   = 10
 
   [[entry.bullets]]
+  id       = "reels-upload-flow"
   text     = "Built the seller video upload flow for \\textbf{4Sale Reels}, the short-form feed on 4Sale's marketplace: presigned \\textbf{S3} uploads into the listing media pipeline"
   tags     = ["ios", "media", "aws", "backend"]
   weight   = 8
@@ -30,6 +31,7 @@ weight   = 10
   # not the iOS app. Tagged web accordingly, despite sitting under an iOS
   # job title, so role targeting sends it to the right CV.
   [[entry.bullets]]
+  id       = "reels-playback-analytics"
   text     = "Made playback stream in chunks instead of preloading whole files, and added \\textbf{Amplitude} events to track engagement on the feed"
   tags     = ["web", "typescript", "react", "performance", "media", "analytics"]
   weight   = 8
@@ -42,12 +44,14 @@ weight   = 10
   ]
 
   [[entry.bullets]]
+  id       = "sdui-feed-port"
   text     = "Ported the feed to a \\textbf{server-driven UI} component. iOS and Android render layout the backend sends, so the team changes it without an app release"
   tags     = ["ios", "architecture", "sdui"]
   weight   = 9
   evidence = []
 
   [[entry.bullets]]
+  id       = "saved-search-discovery"
   text     = "Wrote three versions of a save-search reminder in the iOS app and \\textbf{A/B tested} them to pick the winner"
   tags     = ["ios", "swift", "experimentation", "architecture"]
   weight   = 9
@@ -59,6 +63,7 @@ weight   = 10
   ]
 
   [[entry.bullets]]
+  id       = "blog-editor"
   text     = "Currently building a drag-and-drop blog editor for the marketing team"
   tags     = ["web", "react", "typescript"]
   weight   = 6
@@ -73,18 +78,21 @@ tags     = ["ios", "mobile", "industry"]
 weight   = 8
 
   [[entry.bullets]]
+  id       = "bm-shared-components"
   text     = "Wrote \\textbf{SwiftUI} and \\textbf{UIKit} components across 4 internal iOS apps, reused between screens"
   tags     = ["ios", "swift", "ui"]
   weight   = 8
   evidence = []
 
   [[entry.bullets]]
+  id       = "bm-bugfix-profiling"
   text     = "Fixed 11+ UI and API bugs, profiling the slow ones with \\textbf{Xcode Instruments}"
   tags     = ["ios", "performance", "debugging"]
   weight   = 7
   evidence = []
 
   [[entry.bullets]]
+  id       = "bm-sprint-planning"
   text     = "Ran sprint planning for a group of 5 interns alongside the senior mentors"
   tags     = ["leadership", "process"]
   weight   = 6
@@ -99,12 +107,14 @@ tags     = ["flutter", "mobile", "industry"]
 weight   = 7
 
   [[entry.bullets]]
+  id       = "ha-state-management"
   text     = "Set up \\textbf{BLoC/Cubit} state management across several apps to cut unnecessary rebuilds, checked in Flutter DevTools"
   tags     = ["flutter", "dart", "architecture", "performance"]
   weight   = 8
   evidence = []
 
   [[entry.bullets]]
+  id       = "ha-ar-prototype"
   text     = "Prototyped AR features with \\textbf{Vuforia} and wrote the feasibility report that put AR on the roadmap"
   tags     = ["flutter", "ar", "research"]
   weight   = 6

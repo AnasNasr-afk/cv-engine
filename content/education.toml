@@ -7,6 +7,7 @@ tags     = ["core"]
 weight   = 10
 
   [[entry.bullets]]
+  id       = "fue-graduation"
   text     = "Graduation Project: \\textit{InsideOut} --- Grade: \\textbf{A} (both phases). Coursework: Data Structures \\& Algorithms, OOP, Operating Systems"
   tags     = ["core", "academic"]
   weight   = 8
