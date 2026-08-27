@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -226,7 +227,13 @@ def ask_claude(prompt: str) -> dict[str, Any] | None:
         print("  claude timed out", file=sys.stderr)
         return None
     if code != 0:
-        print(f"  claude failed: {err.strip()[:200]}", file=sys.stderr)
+        # The CLI reports most failures on stdout, so a stderr-only message
+        # prints as "claude failed:" with nothing after it -- which is how a
+        # missing ANTHROPIC_API_KEY looked for a whole CI run.
+        detail = (err.strip() or out.strip() or f"exit code {code}")[:300]
+        print(f"  claude failed: {detail}", file=sys.stderr)
+        if not os.environ.get("ANTHROPIC_API_KEY") and not os.environ.get("CLAUDE_CODE_OAUTH_TOKEN"):
+            print("  hint: no ANTHROPIC_API_KEY in the environment", file=sys.stderr)
         return None
     text = out.strip()
     # Tolerate a fenced block even though the prompt asks for bare JSON.
