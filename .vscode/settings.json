@@ -1,0 +1,45 @@
+{
+  "latex-workshop.latex.outDir": "%DIR%/build",
+
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk",
+      "command": "latexmk",
+      "args": [
+        "-pdf",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-synctex=1",
+        "-outdir=%OUTDIR%",
+        "%DOC%"
+      ],
+      "env": {
+        "PATH": "/Library/TeX/texbin:/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+      }
+    }
+  ],
+
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "latexmk (pdflatex)",
+      "tools": ["latexmk"]
+    }
+  ],
+
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "latex-workshop.view.pdf.viewer": "tab",
+  "latex-workshop.latex.autoClean.run": "never",
+
+  "files.associations": {
+    "*.tex": "latex",
+    "*.sty": "latex",
+    "*.cls": "latex"
+  },
+
+  "editor.wordWrap": "on",
+  "[latex]": {
+    "editor.wordWrap": "on",
+    "editor.tabSize": 2,
+    "editor.formatOnSave": false
+  }
+}

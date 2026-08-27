@@ -1,0 +1,90 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{styles/resume}[2026/08/27 Resume layout and entry primitives]
+
+% ---------------------------------------------------------------
+% Package loading.
+% Order is significant: fullpage must precede geometry, and
+% glyphtounicode sits between the multicol lengths and geometry.
+% Do not reorder without re-checking the rendered margins.
+% ---------------------------------------------------------------
+\RequirePackage{latexsym}
+\RequirePackage[empty]{fullpage}
+\RequirePackage{titlesec}
+\RequirePackage{marvosym}
+\RequirePackage[usenames,dvipsnames]{color}
+\RequirePackage{verbatim}
+\RequirePackage{enumitem}
+\RequirePackage[hidelinks]{hyperref}
+\RequirePackage{fancyhdr}
+\RequirePackage[english]{babel}
+\RequirePackage{tabularx}
+\RequirePackage{multicol}
+\setlength{\multicolsep}{-3.0pt}
+\setlength{\columnsep}{-1pt}
+\input{glyphtounicode}
+\RequirePackage[margin=1.1cm]{geometry}
+
+% ---------------------------------------------------------------
+% Page style: no header, no footer, no rules.
+% ---------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.15in}
+\addtolength{\textwidth}{0.3in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% ---------------------------------------------------------------
+% Section headings: small caps, followed by a full-width rule.
+% ---------------------------------------------------------------
+\titleformat{\section}{
+  \vspace{-3pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule\vspace{-3pt}]
+
+% Emit a ToUnicode map so the PDF stays copy-pasteable and ATS-readable.
+\pdfgentounicode=1
+
+% ---------------------------------------------------------------
+% Entry primitives.
+% ---------------------------------------------------------------
+
+% \resumeItem{text} -- a single bullet.
+\newcommand{\resumeItem}[1]{
+  \item\small{{#1\vspace{1pt}}}
+}
+
+% \resumeSubheading{org}{location}{role}{dates} -- two-line job/school entry.
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & {\small #2} \\
+      \textit{\small#3} & {\small #4} \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+% \resumeProjectHeading{title + stack}{links or dates} -- one-line entry.
+\newcommand{\resumeProjectHeading}[2]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{1.001\textwidth}{l@{\extracolsep{\fill}}r}
+      \small\textbf{#1} & \small #2\\
+    \end{tabular*}\vspace{-6pt}
+}
+
+\renewcommand\labelitemi{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+% List wrappers. \resumeSubHeadingListStart holds entries;
+% \resumeItemListStart holds the bullets inside one entry.
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.0in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}\vspace{0pt}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.2in]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+\endinput

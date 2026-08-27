@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "repositories": [
+    "../landing-page-generator"
+  ],
+  "repository_roots": [],
+  "exclude_patterns": [
+    "**/node_modules/**",
+    "**/vendor/**",
+    "**/.cache/**",
+    "**/Pods/**",
+    "**/build/**",
+    "**/DerivedData/**"
+  ],
+  "author_patterns": [
+    "anas\\.nasr132003@gmail\\.com",
+    "anmostafa03@gmail\\.com",
+    "^Anas Nasr <"
+  ],
+  "max_discovery_depth": 3,
+  "max_commits_per_repo": 50,
+  "target_roles": [
+    "iOS Engineer",
+    "Flutter/Mobile Engineer"
+  ],
+  "study_hours_per_week": 5
+}

@@ -1,0 +1,23 @@
+# LaTeX build output
+build/
+*.aux
+*.bcf
+*.blg
+*.bbl
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+
+# Career loop state (cursor, not the evidence record)
+.career-loop/state.json
+
+# macOS
+.DS_Store
+
+# Note: *.pdf is deliberately NOT ignored wholesale.
+# If you ever embed a PDF asset, it must stay tracked.
+# The generated resume goes to build/ which is ignored above.

@@ -1,0 +1,29 @@
+%===============================================================
+% Anas Nasr Mostafa -- CV
+%
+% Build:  latexmk -pdf -outdir=build main.tex
+% Engine: pdfLaTeX (uses \pdfgentounicode for ATS-readable output)
+%
+% Layout, packages and the \resume* commands live in styles/resume.sty.
+% Content lives in sections/ and is included in the order below --
+% reordering these \input lines reorders the CV.
+%===============================================================
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{styles/resume}
+
+\begin{document}
+
+\input{sections/heading}
+
+\input{sections/education}
+
+\input{sections/experience}
+
+\input{sections/skills}
+
+\input{sections/projects}
+
+\input{sections/leadership}
+
+\end{document}
