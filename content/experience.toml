@@ -71,7 +71,7 @@ weight   = 10
 
   [[entry.bullets]]
   id       = "landing-page-builder"
-  text     = "Built a drag-and-drop landing-page builder featuring a staging Blocks tab, Pages, and horizontal/vertical containers, with listings cards matching 4Sale's design plus customizable colors, backgrounds, and text styling."
+  text     = "Built a drag-and-drop landing-page builder featuring a staging Blocks tab, Pages, and horizontal/vertical containers, with listings cards matching 4Sale's design plus customizable colors for CTA buttons, labels, headings, and paragraphs, and the SS Sakr Soft brand font family."
   tags     = ["web", "react", "ui"]
   weight   = 6
   evidence = [
@@ -81,6 +81,10 @@ weight   = 10
     "landing-page-generator@a2c4689",
     "landing-page-generator@7747789",
     "landing-page-generator@1229526",
+    "landing-page-generator@f3d1c2a",
+    "landing-page-generator@03d8ec3",
+    "landing-page-generator@f0a8cf2",
+    "landing-page-generator@15bbf10",
   ]
 
 [[entry]]
