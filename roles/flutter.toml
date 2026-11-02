@@ -23,7 +23,9 @@ backend      = 0.6
 order = ["education", "experience", "projects", "skills", "leadership"]
 
 [limits]
+education_bullets_max = 1   # graduation project only; no credit-hour detail
 experience_bullets_max = 5
+experience_bullets_by_rank = [3, 3, 2, 1]   # newest first; older jobs get fewer lines
 projects_max           = 4
 project_bullets_max    = 1
 skills_max             = 5

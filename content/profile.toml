@@ -17,3 +17,8 @@ url   = "https://github.com/AnasNasr-afk"
 [[links]]
 label = "linkedin.com/in/anasnasr"
 url   = "https://linkedin.com/in/anasnasr"
+
+# Official personal data (legal name, birth date and place, nationality,
+# address) lives in content/personal.toml, which is gitignored: this repo
+# is public. Only tabular (Lebenslauf) roles use it. Without the file
+# those fields render empty, which is what CI gets.

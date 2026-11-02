@@ -9,10 +9,16 @@ name   = "RASM --- Cursor Build-a-thon, \\textbf{3rd Place}"
 stack  = "Next.js, TypeScript, Postgres, Drizzle"
 tags   = ["web", "typescript", "react", "backend", "award"]
 weight = 9
+pin    = true   # most recent project: on every CV, first in the list
 links  = [
   { label = "Live",   url = "https://team-8-rasma.vercel.app/" },
   { label = "GitHub", url = "https://github.com/Sherlemious/CursorBuildathon" },
 ]
+
+# Pinned first on every CV as the most recent project. The AI internship
+# CV leads with the speech apps instead; the hackathon still ranks.
+[entry.pin_by_label]
+ai = false
 
   [[entry.bullets]]
   id       = "rasm-commission-flow"
@@ -21,6 +27,41 @@ links  = [
   weight   = 9
   evidence = ["CursorBuildathon@7-commits"]
 
+  [entry.bullets.text_by_label]
+  qa = "\\textbf{Paymob} checkout built in 4 hours at an \\textbf{AI-tooling hackathon}: order state from HMAC-verified webhooks, not the browser redirect"
+
+[[entry]]
+name   = "Web Application QA --- Software Testing Practicum"
+stack  = "Manual, Postman, Selenium (Java), Jira"
+tags   = ["qa", "testing", "automation", "manual-testing", "api"]
+# A training exercise must not outrank shipped work on any CV that is not
+# about testing, so the base weight keeps it off them entirely and
+# `weight_by_label` puts it at the top of the QA one.
+weight = 2
+
+[entry.weight_by_label]
+qa = 9
+
+  [[entry.bullets]]
+  id       = "qa-practicum-manual"
+  text     = "Wrote and executed manual test cases --- functional, regression, integration --- for a web application, then logged and tracked every defect in \\textbf{Jira}/\\textbf{Trello}"
+  tags     = ["qa", "testing", "manual-testing", "defects"]
+  weight   = 3
+  evidence = []
+
+  [entry.bullets.weight_by_label]
+  qa = 9
+
+  [[entry.bullets]]
+  id       = "qa-practicum-api-automation"
+  text     = "Validated backend endpoints in \\textbf{Postman} --- status codes, payloads, error paths --- and automated regression flows in \\textbf{Selenium}"
+  tags     = ["qa", "api", "automation", "testing"]
+  weight   = 3
+  evidence = []
+
+  [entry.bullets.weight_by_label]
+  qa = 9
+
 [[entry]]
 name   = "InsideOut --- Graduation Project"
 stack  = "Flutter, Firebase, SendBird"
@@ -28,9 +69,16 @@ tags   = ["flutter", "dart", "mobile", "leadership", "academic"]
 weight = 10
 links  = [{ label = "GitHub", url = "https://github.com/AnasNasr-afk/inside-out" }]
 
+# The QA CV lists this project under Education already; the slot is worth
+# more to a testing reader as CairoCrew (unit tests, crash-report triage).
+# A sub-table captures every bare key after it, so overrides go last.
+[entry.weight_by_label]
+qa = 6
+ai = 11
+
   [[entry.bullets]]
   id       = "insideout-client"
-  text     = "Led the team and wrote the \\textbf{Flutter} client. Integrated \\textbf{DOOBY}, an AI speech avatar, and \\textbf{SendBird} chat between specialists and parents"
+  text     = "Led the team and wrote the \\textbf{Flutter} client: \\textbf{DOOBY}, an AI speech avatar, and \\textbf{SendBird} chat between specialists and parents"
   tags     = ["flutter", "leadership", "ai", "realtime"]
   weight   = 9
   evidence = ["inside-out@63-commits", "AnasNasr-afk/inside-out#22-prs"]
@@ -45,12 +93,19 @@ links  = [
   { label = "GitHub",    url = "https://github.com/AnasNasr-afk/sound-sCool" },
 ]
 
+[entry.weight_by_label]
+ai = 12
+
   [[entry.bullets]]
   id       = "soundscool-scoring"
   text     = "Scores pronunciation word by word from \\textbf{Gemini Speech-to-Text}, about 2 seconds per attempt. On \\textbf{iOS and Android}"
   tags     = ["flutter", "ai", "mobile", "ios"]
   weight   = 8
   evidence = ["sound-sCool@51-commits", "AnasNasr-afk/sound-sCool#21-prs"]
+
+  [entry.bullets.text_by_label]
+  qa = "Scores pronunciation from \\textbf{Gemini Speech-to-Text} in about 2 seconds --- shipped and tested on \\textbf{iOS and Android}"
+  ai = "Shipped on the \\textbf{Play Store}: scores pronunciation word by word from \\textbf{Gemini Speech-to-Text}, about 2 seconds per attempt, on \\textbf{iOS and Android}"
 
 [[entry]]
 name   = "CairoCrew"
@@ -62,12 +117,23 @@ links  = [
   { label = "GitHub",    url = "https://github.com/AnasNasr-afk/flutter_maps" },
 ]
 
+# Shipped, and the one project with tests and crash-report triage behind
+# it -- worth more to a QA reader than the graduation project.
+[entry.weight_by_label]
+qa = 10
+
   [[entry.bullets]]
   id       = "cairocrew-reporting"
   text     = "Citizens report and track local infrastructure problems on a live \\textbf{Google Maps} view. Separate admin and citizen roles"
   tags     = ["flutter", "maps", "mobile"]
   weight   = 7
   evidence = ["flutter_maps@46-commits", "AnasNasr-afk/flutter_maps#20-prs"]
+
+  [entry.bullets.weight_by_label]
+  qa = 10
+
+  [entry.bullets.text_by_label]
+  qa = "Shipped to the \\textbf{Play Store}: \\textbf{unit tests} on the core logic, with logs and crash reports used to chase the rest"
 
 # --- Below the fold on most roles, but available when they rank higher ---
 

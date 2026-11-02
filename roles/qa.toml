@@ -1,0 +1,82 @@
+# QA / Software Tester -- junior and internship postings.
+#
+# This is the one role where the CV has to argue rather than assert: the
+# work underneath it is engineering work, and the reader is filling a
+# testing seat. Three things do that arguing, and they are why this role
+# looks different from the platform ones:
+#
+#   1. a Summary and a headline (content/summary.toml), which no other
+#      role renders -- see the note there;
+#   2. a Certifications & Training section (his order: below Projects),
+#      because the testing course is the only credential on the page
+#      that names the job being applied for;
+#   3. `text_by_label = { qa = ... }` on most bullets, so the same work
+#      is told from the testing side without forking the content.
+#
+# Platform tags are damped rather than crushed. A QA team hiring for web
+# and mobile testing still wants to see that he has shipped both; what it
+# does not want is a CV that reads as an iOS CV with a testing paragraph
+# stapled to the front.
+
+name  = "QA Engineer"
+label = "qa"
+
+[boost]
+qa            = 2.6
+testing       = 2.4
+manual-testing = 2.2
+automation    = 2.2
+defects       = 2.2
+debugging     = 2.0
+uat           = 2.0
+api           = 1.8
+ai-tools      = 1.8
+process       = 1.6
+experimentation = 1.5
+collaboration = 1.4
+industry      = 1.4
+analytics     = 1.3
+shipped       = 1.3
+performance   = 1.3
+security      = 1.2
+leadership    = 1.2
+teaching      = 1.2
+award         = 1.2
+ai            = 1.2
+research      = 1.1
+payments      = 1.1
+internal-tools = 1.1
+product       = 1.1
+ui            = 1.0
+academic      = 1.0
+mobile        = 0.9
+backend       = 0.9
+architecture  = 0.9
+core          = 0.9
+web           = 0.8
+typescript    = 0.8
+cloud         = 0.8
+devops        = 0.8
+media         = 0.8
+maps          = 0.8
+realtime      = 0.8
+ios           = 0.7
+flutter       = 0.7
+react         = 0.7
+sdui          = 0.7
+swift         = 0.6
+dart          = 0.6
+
+[sections]
+order = ["summary", "education", "experience", "skills", "projects", "certifications", "leadership"]
+
+[limits]
+education_bullets_max     = 1   # graduation project only
+experience_bullets_max    = 3
+experience_bullets_by_rank = [3, 3, 2, 1]   # newest first; older jobs get fewer lines
+certifications_max        = 1
+certification_bullets_max = 1
+projects_max              = 3   # a fourth project pushes to two pages
+project_bullets_max       = 2   # the QA practicum needs two; the rest have one
+skills_max                = 5
+leadership_max            = 1

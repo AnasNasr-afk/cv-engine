@@ -12,6 +12,7 @@ performance  = 1.4
 security     = 1.4
 leadership   = 1.4
 industry     = 1.4
+internal-tools = 1.3
 shipped      = 1.3
 ai           = 1.2
 core         = 1.2
@@ -24,7 +25,9 @@ mobile       = 1.0
 order = ["education", "experience", "skills", "projects", "leadership"]
 
 [limits]
-experience_bullets_max = 4
+education_bullets_max = 1   # graduation project only; no credit-hour detail
+experience_bullets_max = 5
+experience_bullets_by_rank = [3, 3, 2, 1]   # newest first; older jobs get fewer lines
 projects_max           = 4
 project_bullets_max    = 1
 skills_max             = 5

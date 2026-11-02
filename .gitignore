@@ -29,3 +29,9 @@ DRAFT.json
 _evidence/
 __pycache__/
 *.pyc
+
+# Personal data for the Lebenslauf. The repo is public.
+content/personal.toml
+# Local exports and screenshots (photo, personal data)
+output/
+page-*.png

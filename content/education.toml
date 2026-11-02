@@ -12,3 +12,28 @@ weight   = 10
   tags     = ["core", "academic"]
   weight   = 8
   evidence = ["inside-out@63-commits"]
+
+  # Academic detail. A recruiter does not want credit-hour arithmetic on a
+  # one-page CV, but a German admissions committee assesses "suitability of
+  # the bachelor's degree" as a scored criterion and reads exactly this.
+  # Roles cap the section via education_bullets_max: 1 for job CVs, 4 here.
+  [[entry.bullets]]
+  id       = "fue-cgpa"
+  text     = "Cumulative GPA \\textbf{2.94 / 4.0} across 46 courses over eight semesters"
+  tags     = ["academic"]
+  weight   = 7
+  evidence = []
+
+  [[entry.bullets]]
+  id       = "fue-credits"
+  text     = "\\textbf{133 credit hours} completed (approx. 266 ECTS): 96 in computer science (72%), 15 mathematics, 9 science, 13 general"
+  tags     = ["academic"]
+  weight   = 7
+  evidence = []
+
+  [[entry.bullets]]
+  id       = "fue-coursework"
+  text     = "Selected grades: Algorithms \\textbf{A}, Mathematics I--III \\textbf{A/A/A--}, Data Structures \\textbf{B}"
+  tags     = ["academic"]
+  weight   = 6
+  evidence = []

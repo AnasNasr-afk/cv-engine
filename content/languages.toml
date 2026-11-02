@@ -1,0 +1,19 @@
+# Language competence.
+#
+# Only the tabular (Lebenslauf) roles render this section. Levels are
+# stated exactly as they can be evidenced -- German is marked
+# self-assessed because no certificate exists, and claiming a bare
+# "B1" on a document that goes to a German university would be read
+# as a certified level.
+
+[[entry]]
+language = "Arabic"
+level    = "Native speaker"
+
+[[entry]]
+language = "English"
+level    = "Fluent; full working proficiency. IELTS Academic overall band 6.0 (British Council Egypt, October 2026). Medium of instruction throughout the B.Sc."
+
+[[entry]]
+language = "German"
+level    = "Approximately B1, self-assessed. No certificate held; currently studying."

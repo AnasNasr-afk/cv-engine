@@ -1,0 +1,22 @@
+# Certifications & training.
+#
+# Only roles whose `[sections] order` names "certifications" render this
+# file, so adding an entry here cannot disturb the platform CVs. Same
+# shape as leadership: a one-line heading (name left, dates right) with
+# optional links, plus bullets describing what the training covered.
+
+[[entry]]
+name   = "Software Testing --- Manual, API (Postman) \\& Automation (Selenium)"
+dates  = "2025"
+tags   = ["qa", "testing", "automation", "api", "manual-testing"]
+weight = 10
+links  = [
+  { label = "Certificate", url = "https://drive.google.com/file/d/1sY4dsqbN5PFx9OLgeiCpqpyz4XKkSHZx/view" },
+]
+
+  [[entry.bullets]]
+  id       = "testing-course-scope"
+  text     = "Functional, regression and integration testing; test case and bug-report writing; \\textbf{SDLC/STLC} and Agile testing workflows"
+  tags     = ["qa", "testing", "manual-testing", "process"]
+  weight   = 9
+  evidence = []

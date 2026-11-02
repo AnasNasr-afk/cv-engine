@@ -56,19 +56,30 @@ def sha_exists(repo: Path, sha: str) -> bool:
 
 
 def walk() -> list[tuple[str, str, str, list[str]]]:
-    """(section, entry title, bullet text, evidence) for every bullet."""
+    """(section, entry title, bullet text, evidence) for every bullet.
+
+    A per-role wording (`text_by_label`) is audited alongside the default
+    one: an override can make a claim the bullet it replaces does not, and
+    an unevidenced claim is no less unevidenced for appearing on one CV.
+    """
     rows = []
     for filename, key, title_field in [
         ("education.toml", "entry", "org"),
         ("experience.toml", "entry", "org"),
         ("projects.toml", "entry", "name"),
         ("leadership.toml", "entry", "name"),
+        ("certifications.toml", "entry", "name"),
     ]:
         section = filename.replace(".toml", "")
+        if not (CONTENT / filename).is_file():
+            continue
         for entry in load(filename).get(key, []):
             title = entry.get(title_field, "?")
             for bullet in entry.get("bullets", []):
-                rows.append((section, title, bullet.get("text", ""), bullet.get("evidence", [])))
+                evidence = bullet.get("evidence", [])
+                rows.append((section, title, bullet.get("text", ""), evidence))
+                for label, text in sorted(bullet.get("text_by_label", {}).items()):
+                    rows.append((f"{section}/{label}", title, text, evidence))
     return rows
 
 
@@ -97,9 +108,16 @@ def main() -> int:
 
     if args.verify:
         print("\n--- verifying references ---")
+        # A reference backs a claim once, however many wordings that claim
+        # has: the per-label rows above share one evidence list, and
+        # checking it twice would report one broken commit as two.
         bad, ok, skipped = [], 0, 0
+        seen: set[str] = set()
         for section, title, _, evidence in rows:
             for ref in evidence:
+                if ref in seen:
+                    continue
+                seen.add(ref)
                 m = SHA_REF.match(ref)
                 if m:
                     repo = find_repo(m.group(1))

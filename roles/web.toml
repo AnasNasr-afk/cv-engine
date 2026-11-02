@@ -14,6 +14,7 @@ award      = 1.5
 performance = 1.2
 architecture = 1.3
 industry   = 1.3
+internal-tools = 1.3
 ios        = 0.5
 swift      = 0.4
 flutter    = 0.6
@@ -26,7 +27,9 @@ shipped        = 1.3
 order = ["education", "experience", "projects", "skills", "leadership"]
 
 [limits]
+education_bullets_max = 1   # graduation project only; no credit-hour detail
 experience_bullets_max = 4
+experience_bullets_by_rank = [3, 3, 2, 1]   # newest first; older jobs get fewer lines
 projects_max           = 4
 project_bullets_max    = 1
 skills_max             = 5

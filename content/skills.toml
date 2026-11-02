@@ -33,3 +33,61 @@ label  = "Cloud \\& Tools"
 items  = "AWS (Cloud Practitioner, S3, ECR, EKS), Docker, Kubernetes, GitHub Actions, Amplitude, Git, Jira"
 tags   = ["cloud", "devops", "core"]
 weight = 7
+
+# --- QA categories -----------------------------------------------------
+#
+# The base weight keeps these off every other CV; `weight_by_label` lifts
+# them on the QA one. A boost alone could not do this safely: the platform
+# roles suppress their rival platforms so hard that a category scoring 5
+# lands above a genuinely relevant one, which is exactly what happened.
+
+[[category]]
+label  = "Testing Types"
+items  = "Manual, Functional, Regression, Integration, Smoke, Exploratory, API, UAT support"
+tags   = ["qa", "testing"]
+weight = 2.2
+[category.weight_by_label]
+qa = 12
+
+[[category]]
+label  = "Test Design \\& Docs"
+items  = "Test cases, test plans, requirement analysis, expected vs. actual results, defect \\& bug reporting"
+tags   = ["qa", "testing", "process"]
+weight = 2.2
+[category.weight_by_label]
+qa = 13
+
+[[category]]
+label  = "Automation \\& Tools"
+items  = "Selenium (Java), Postman, Jira, Trello, GitHub Issues, Git/GitHub (branches, pull requests, code review)"
+tags   = ["qa", "automation", "testing"]
+weight = 2.2
+[category.weight_by_label]
+qa = 11.5
+
+[[category]]
+label  = "AI-Assisted QA"
+items  = "Claude Code, Cursor, Copilot --- drafting test cases, generating scripts, triaging defects"
+tags   = ["qa", "ai-tools"]
+weight = 2.2
+[category.weight_by_label]
+qa = 10
+
+# The AI line is for the internship CV only. ML/DL, RAG, and n8n are
+# skills he asked to list; Gemini is the one tied to a shipped app.
+
+[[category]]
+label  = "AI"
+items  = "Machine learning, deep learning, RAG, n8n, Gemini Speech-to-Text"
+tags   = ["ai"]
+weight = 2
+[category.weight_by_label]
+ai = 12
+
+[[category]]
+label  = "Engineering"
+items  = "Java, Python, Dart, Swift, TypeScript / JavaScript, SQL --- iOS, Android, Flutter and React web apps, REST/JSON APIs"
+tags   = ["qa", "core"]
+weight = 2.2
+[category.weight_by_label]
+qa = 9.5

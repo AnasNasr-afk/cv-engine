@@ -1,0 +1,33 @@
+# Per-role summary paragraph and headline.
+#
+# One [[entry]] per role label; a role with no entry renders no summary
+# and no headline. An entry may set only `headline` -- the platform CVs
+# take a title under the name but no summary paragraph. A summary
+# earns its space only when the CV has an argument to make that the
+# bullets cannot make for themselves -- here, why a mobile/web engineer's
+# CV belongs in the QA pile. Keep it to three lines.
+
+[[entry]]
+label    = "ios"
+headline = "Mobile Software Engineer"
+
+[[entry]]
+label    = "qa"
+headline = "Junior QA Engineer"
+text     = """
+Computer Science graduate with a software testing certification (manual, API and Selenium automation) \
+and three engineering internships spent reproducing, debugging and fixing defects in production web and \
+mobile apps --- including banking software at Banque Misr. Writes test cases and bug reports, validates \
+REST endpoints in \\textbf{Postman}, tracks defects in \\textbf{Jira}, and works daily with AI assistants \
+(Claude Code, Cursor).\
+"""
+
+[[entry]]
+label    = "ai"
+headline = "Computer Science Graduate"
+text     = """
+Computer Science graduate (June 2026). Skills in machine learning, deep learning, \
+retrieval-augmented generation (\\textbf{RAG}), and \\textbf{n8n}. Shipped \\textbf{Sound'sCool} \
+on \\textbf{Gemini Speech-to-Text}, and the \\textbf{Flutter} client for \\textbf{InsideOut}, \
+an AI speech avatar.\
+"""

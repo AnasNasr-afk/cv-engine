@@ -1,0 +1,54 @@
+# AI internship -- a one-month, project-based seat for a graduate.
+#
+# The reader is screening for two things the platform CVs bury: a finished
+# degree, and work where a model is part of the product. Both already
+# exist (Sound'sCool on Gemini Speech-to-Text, InsideOut's speech avatar).
+# Internships come first, then the speech projects. It does not invent
+# ML coursework.
+#
+# Same mechanism as the QA role: a summary, `weight_by_label`, and
+# `text_by_label`. Nothing here changes what the other CVs render.
+
+name  = "AI Intern"
+label = "ai"
+
+[boost]
+ai             = 2.6
+shipped        = 1.8
+award          = 1.5
+leadership     = 1.4
+academic       = 1.3
+experimentation = 1.3
+internal-tools = 1.3
+industry       = 1.2
+research       = 1.1
+product        = 1.1
+flutter        = 1.0
+mobile         = 1.0
+dart           = 0.9
+core           = 1.0
+web            = 0.9
+backend        = 0.9
+realtime       = 0.9
+payments       = 0.8
+security       = 0.8
+ios            = 0.7
+swift          = 0.6
+architecture   = 0.7
+sdui           = 0.6
+cloud          = 0.6
+devops         = 0.6
+performance    = 0.8
+ui             = 0.8
+
+[sections]
+order = ["summary", "education", "experience", "projects", "skills", "leadership"]
+
+[limits]
+education_bullets_max  = 1
+experience_bullets_max = 2
+experience_bullets_by_rank = [3, 3, 2, 1]   # newest first; older jobs get fewer lines
+projects_max           = 3   # Sound'sCool, InsideOut, RASM
+project_bullets_max    = 1
+skills_max             = 4
+leadership_max         = 1

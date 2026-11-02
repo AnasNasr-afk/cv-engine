@@ -13,16 +13,3 @@ weight = 8
   tags     = ["leadership", "flutter", "teaching"]
   weight   = 8
   evidence = []
-
-[[entry]]
-name   = "\\textbf{Open Source} --- AOSSIE NeuroTrack"
-dates  = "Mar 2026"
-tags   = ["opensource", "flutter", "community"]
-weight = 5
-
-  [[entry.bullets]]
-  id       = "oss-neurotrack"
-  text     = "Replaced discarded \\texttt{Provider.of} calls with \\texttt{context.watch} and refactored navigation in the auth flow"
-  tags     = ["opensource", "flutter", "dart"]
-  weight   = 5
-  evidence = ["NeuroTrack@f51f8f0", "NeuroTrack@8e81af6"]

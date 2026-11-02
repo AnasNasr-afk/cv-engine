@@ -70,8 +70,11 @@
 }
 
 % \resumeProjectHeading{title + stack}{links or dates} -- one-line entry.
+% The 1.001 is deliberate: the 0.58pt overflow forces the line break the
+% following \vspace relies on. At exactly 1.0 the headings collapse onto
+% their bullets. \hfuzz keeps that overflow out of the log.
 \newcommand{\resumeProjectHeading}[2]{
-  \vspace{-1pt}\item
+  \vspace{-1pt}\item\hfuzz=1pt
     \begin{tabular*}{1.001\textwidth}{l@{\extracolsep{\fill}}r}
       \small\textbf{#1} & \small #2\\
     \end{tabular*}\vspace{-6pt}
@@ -86,5 +89,46 @@
 \newcommand{\resumeSubHeadingListEnd}{\end{itemize}\vspace{0pt}}
 \newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.2in]}
 \newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+% ---------------------------------------------------------------
+% Tabular (German Lebenslauf) primitives.
+%
+% A Lebenslauf runs dates down a fixed left column with the entry
+% body flowing beside it. Two side-by-side minipages give that far
+% more reliably than a tabularx whose cells must hold itemize --
+% list spacing inside table cells is fragile, and the entries here
+% carry bullets.
+%
+% Used only by roles that set layout = "tabular"; the bullet-style
+% \resume* commands above are untouched.
+% ---------------------------------------------------------------
+\newlength{\cvdatewidth}
+\setlength{\cvdatewidth}{4.0cm}
+
+% \cventry{dates}{body} -- one row of the Lebenslauf.
+\newcommand{\cventry}[2]{%
+  \par\vspace{5pt}\noindent
+  \begin{minipage}[t]{\cvdatewidth}\small\raggedright #1\end{minipage}%
+  \begin{minipage}[t]{\dimexpr\textwidth-\cvdatewidth\relax}\raggedright #2\end{minipage}%
+  \par
+}
+
+% \cvfact{label}{value} -- a personal-details line. Same geometry as
+% \cventry so the left column stays flush the whole way down the page.
+\newcommand{\cvfact}[2]{%
+  \par\vspace{1.5pt}\noindent
+  \begin{minipage}[t]{\cvdatewidth}\small\raggedright #1\end{minipage}%
+  \begin{minipage}[t]{\dimexpr\textwidth-\cvdatewidth\relax}\small\raggedright #2\end{minipage}%
+  \par
+}
+
+% Tight bullet list for use inside a \cventry body.
+\newcommand{\cvbullets}{\begin{itemize}[leftmargin=0.16in, topsep=1pt, itemsep=0pt, parsep=0pt]}
+\newcommand{\cvbulletsend}{\end{itemize}}
+
+% A field the author has not supplied yet. Rendered loudly on purpose:
+% a Lebenslauf is an official document and a silently missing field is
+% worse than an obvious one.
+\newcommand{\cvmissing}[1]{\textcolor{Red}{\textbf{[#1 -- to be completed]}}}
 
 \endinput
