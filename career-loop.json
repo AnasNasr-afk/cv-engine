@@ -61,7 +61,11 @@
     "AnasNasr-afk/social-application",
     "AnasNasr-afk/sound-sCool",
     "Mahm0udbakir/google_hackthon_savesavey",
-    "Sherlemious/CursorBuildathon"
+    "Sherlemious/CursorBuildathon",
+    "Gym-Z/Fit99-MemberApp",
+    "Gym-Z/Fit99-CoachApp",
+    "Gym-Z/GymZ-MemberApp",
+    "Gym-Z/GymZ-CoachApp"
   ],
   "exclude_repos": [
     "cv-engine",
