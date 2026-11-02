@@ -186,20 +186,6 @@ weight   = 8
   weight   = 7
   evidence = ["AnasNasr-afk/Banque-Misr-team1"]
 
-  [[entry.bullets]]
-  id       = "bm-sprint-planning"
-  text     = "Ran sprint planning for a group of 5 interns alongside the senior mentors"
-  tags     = ["leadership", "process"]
-  weight   = 6
-  evidence = []
-
-  [entry.bullets.text_by_label]
-  qa = "Reproduced and confirmed issues with senior developers; ran sprint planning for 5 interns, on-time completion 70% to 95%"
-
-  # Planning is the weakest of the three for a build-a-project internship.
-  [entry.bullets.weight_by_label]
-  ai = 4
-
 [[entry]]
 org      = "Hassan Allam Holding"
 location = "Cairo, Egypt"

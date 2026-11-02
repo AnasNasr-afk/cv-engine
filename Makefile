@@ -16,6 +16,9 @@
 # sections/ is generated -- never edit it by hand.
 
 ROLE ?= ios
+# The main CV (the one sent by default) is the iOS build. It is also
+# written as build/Anas_Nasr_Mostafa_CV.pdf, no role suffix.
+MAIN_ROLE := ios
 
 # MacTeX installs to /Library/TeX/texbin, which a non-login shell may not
 # have on PATH. Two separate fixes are needed:
@@ -47,6 +50,7 @@ render:
 $(DIST): render $(MAIN) styles/resume.sty
 	@$(LATEXMK) $(MAIN) >/dev/null
 	@cp $(PDF) $(DIST)
+	@if [ "$(ROLE)" = "$(MAIN_ROLE)" ]; then cp $(PDF) $(OUTDIR)/Anas_Nasr_Mostafa_CV.pdf; fi
 	@echo "built $(DIST) ($$(python3 -c "import re,pathlib;\
 	  raw=pathlib.Path('$(OUTDIR)/main.log').read_text(errors='replace');\
 	  m=re.search(r'Output written on .*?\((\d+) pages?', re.sub(r'\n','',raw));\
