@@ -2,14 +2,14 @@
 # style (name on the left, dates on the right).
 
 [[entry]]
-name   = "\\textbf{GDG Al-Azhar --- Vice Head, Flutter Chapter}"
+name   = "GDG Al-Azhar $|$ \\textit{Vice Head, Flutter Chapter}"
 dates  = "Oct 2025 -- May 2026"
 tags   = ["leadership", "flutter", "community"]
 weight = 8
 
   [[entry.bullets]]
   id       = "gdg-flutter-workshops"
-  text     = "Ran workshops on \\textbf{BLoC}, \\textbf{Cubit}, and clean architecture for 8 developers, and wrote the chapter's curriculum"
+  text     = "Guided 12+ students across \\textbf{BLoC} and \\textbf{Cubit} state management and clean architecture in \\textbf{Flutter} during the chapter's workshops, and wrote its curriculum"
   tags     = ["leadership", "flutter", "teaching"]
   weight   = 8
   evidence = []

@@ -5,7 +5,7 @@
 # `links` render right-aligned on the heading line.
 
 [[entry]]
-name   = "RASM --- Cursor Build-a-thon, \\textbf{3rd Place}"
+name   = "RASM"
 stack  = "Next.js, TypeScript, Postgres, Drizzle"
 tags   = ["web", "typescript", "react", "backend", "award"]
 weight = 9
@@ -22,7 +22,7 @@ ai = false
 
   [[entry.bullets]]
   id       = "rasm-commission-flow"
-  text     = "Commission workflow for freelance artists, built in 4 hours. \\textbf{Paymob} checkout, with order state coming from HMAC-verified webhooks rather than the browser redirect"
+  text     = "\\textbf{3rd place} at the Cursor Build-a-thon: built a commission app for freelance artists in 4 hours, with \\textbf{Paymob} checkout confirmed by HMAC-verified webhooks"
   tags     = ["web", "backend", "security", "payments"]
   weight   = 9
   evidence = ["CursorBuildathon@7-commits"]
@@ -31,7 +31,7 @@ ai = false
   qa = "\\textbf{Paymob} checkout built in 4 hours at an \\textbf{AI-tooling hackathon}: order state from HMAC-verified webhooks, not the browser redirect"
 
 [[entry]]
-name   = "Web Application QA --- Software Testing Practicum"
+name   = "Web Application QA"
 stack  = "Manual, Postman, Selenium (Java), Jira"
 tags   = ["qa", "testing", "automation", "manual-testing", "api"]
 # A training exercise must not outrank shipped work on any CV that is not
@@ -44,7 +44,7 @@ qa = 9
 
   [[entry.bullets]]
   id       = "qa-practicum-manual"
-  text     = "Wrote and executed manual test cases --- functional, regression, integration --- for a web application, then logged and tracked every defect in \\textbf{Jira}/\\textbf{Trello}"
+  text     = "Software testing practicum: wrote and executed manual test cases (functional, regression, integration) for a web application, then logged and tracked every defect in \\textbf{Jira}/\\textbf{Trello}"
   tags     = ["qa", "testing", "manual-testing", "defects"]
   weight   = 3
   evidence = []
@@ -63,7 +63,7 @@ qa = 9
   qa = 9
 
 [[entry]]
-name   = "InsideOut --- Graduation Project"
+name   = "InsideOut"
 stack  = "Flutter, Firebase, SendBird"
 tags   = ["flutter", "dart", "mobile", "leadership", "academic"]
 weight = 10
@@ -78,7 +78,7 @@ ai = 11
 
   [[entry.bullets]]
   id       = "insideout-client"
-  text     = "Led the team and wrote the \\textbf{Flutter} client: \\textbf{DOOBY}, an AI speech avatar, and \\textbf{SendBird} chat between specialists and parents"
+  text     = "Graduation project: led the team and built the \\textbf{Flutter} app, with \\textbf{DOOBY}, an AI speech avatar, and \\textbf{SendBird} chat between specialists and parents"
   tags     = ["flutter", "leadership", "ai", "realtime"]
   weight   = 9
   evidence = ["inside-out@63-commits", "AnasNasr-afk/inside-out#22-prs"]
@@ -98,7 +98,7 @@ ai = 12
 
   [[entry.bullets]]
   id       = "soundscool-scoring"
-  text     = "Scores pronunciation word by word from \\textbf{Gemini Speech-to-Text}, about 2 seconds per attempt. On \\textbf{iOS and Android}"
+  text     = "Built an \\textbf{iOS and Android} pronunciation app that scores each word with \\textbf{Gemini Speech-to-Text} in 2 seconds"
   tags     = ["flutter", "ai", "mobile", "ios"]
   weight   = 8
   evidence = ["sound-sCool@51-commits", "AnasNasr-afk/sound-sCool#21-prs"]
@@ -120,11 +120,12 @@ links  = [
 # Shipped, and the one project with tests and crash-report triage behind
 # it -- worth more to a QA reader than the graduation project.
 [entry.weight_by_label]
-qa = 10
+qa  = 10
+ios = 10   # Anas wants CairoCrew on the iOS CV over SwiftUI Social Feed (Nov 2026)
 
   [[entry.bullets]]
   id       = "cairocrew-reporting"
-  text     = "Citizens report and track local infrastructure problems on a live \\textbf{Google Maps} view. Separate admin and citizen roles"
+  text     = "Built a \\textbf{Google Maps} app where citizens report and track local infrastructure issues, with admin roles"
   tags     = ["flutter", "maps", "mobile"]
   weight   = 7
   evidence = ["flutter_maps@46-commits", "AnasNasr-afk/flutter_maps#20-prs"]
@@ -138,7 +139,7 @@ qa = 10
 # --- Below the fold on most roles, but available when they rank higher ---
 
 [[entry]]
-name   = "SaveSavey --- Google Hackathon"
+name   = "SaveSavey"
 stack  = "Flutter, Firebase"
 tags   = ["flutter", "dart", "mobile", "collaboration"]
 weight = 6
@@ -146,7 +147,7 @@ links  = [{ label = "GitHub", url = "https://github.com/Mahm0udbakir/google_hack
 
   [[entry.bullets]]
   id       = "savesavey-hackathon"
-  text     = "Team hackathon build; contributed 47 commits across 18 merged pull requests"
+  text     = "Google hackathon team build: contributed 47 commits across 18 merged pull requests"
   tags     = ["flutter", "collaboration"]
   weight   = 6
   evidence = ["google_hackthon_savesavey@47-commits"]
@@ -162,7 +163,7 @@ links  = [{ label = "GitHub", url = "https://github.com/AnasNasr-afk/SwiftUI-Soc
 
   [[entry.bullets]]
   id       = "swiftui-social-feed"
-  text     = "Social feed built in \\textbf{SwiftUI}, exercising list virtualisation and async image loading"
+  text     = "Built a social feed in \\textbf{SwiftUI}, exercising list virtualisation and async image loading"
   tags     = ["ios", "swift", "ui", "performance"]
   weight   = 4
   evidence = ["SwiftUI-Social-Feed@6-commits"]

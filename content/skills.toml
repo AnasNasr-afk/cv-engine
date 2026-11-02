@@ -4,21 +4,24 @@
 # Keep `items` ordered most-relevant-first within each category; the
 # renderer does not reorder inside a line.
 
+# `first = true`: always shown, always the first row, on every CV
+# regardless of role (Anas, Nov 2026). The rest are ranked by role.
 [[category]]
 label  = "Languages"
+first  = true
 items  = "Swift, Dart, TypeScript / JavaScript, C\\#, Java, Python"
 tags   = ["ios", "flutter", "web", "core"]
 weight = 10
 
 [[category]]
 label  = "iOS"
-items  = "SwiftUI, UIKit, Combine, Core Data, Server-Driven UI, Xcode Instruments, Fastlane, TestFlight"
+items  = "SwiftUI, UIKit, Combine, Core Data, Xcode Instruments, Fastlane, TestFlight"
 tags   = ["ios", "swift", "mobile"]
 weight = 9
 
 [[category]]
 label  = "Flutter"
-items  = "BLoC, Cubit, Provider, Dio, Firebase, Google Maps, ML Kit, Clean Architecture, Deep Linking"
+items  = "BLoC, Cubit, Dio, Firebase, Google Maps, ML Kit, Clean Architecture, Deep Linking"
 tags   = ["flutter", "dart", "mobile"]
 weight = 9
 
@@ -30,7 +33,7 @@ weight = 7
 
 [[category]]
 label  = "Cloud \\& Tools"
-items  = "AWS (Cloud Practitioner, S3, ECR, EKS), Docker, Kubernetes, GitHub Actions, Amplitude, Git, Jira"
+items  = "AWS (S3, ECR, EKS), Docker, Kubernetes, GitHub Actions, Amplitude, Git, Jira"
 tags   = ["cloud", "devops", "core"]
 weight = 7
 

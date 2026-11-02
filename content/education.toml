@@ -1,17 +1,23 @@
 [[entry]]
 org      = "Future University in Egypt"
-location = "New Cairo, Cairo"
-role     = "B.Sc. Computer Science"
+location = "Cairo, Egypt"
+role     = "Bachelor of Science in Computer Science"
 dates    = "Oct 2022 -- Jun 2026"
 tags     = ["core"]
 weight   = 10
 
+  # Job CVs follow the reference layout (Nov 2026): one plain line, the
+  # project and its grade, no coursework. The Lebenslauf keeps coursework
+  # because an admissions committee reads it.
   [[entry.bullets]]
   id       = "fue-graduation"
-  text     = "Graduation Project: \\textit{InsideOut} --- Grade: \\textbf{A} (both phases). Coursework: Data Structures \\& Algorithms, OOP, Operating Systems"
+  text     = "Graduation Project: \\textit{``InsideOut: Connecting Autistic Children with Specialists''} -- Grade: \\textbf{A}"
   tags     = ["core", "academic"]
   weight   = 8
   evidence = ["inside-out@63-commits"]
+
+  [entry.bullets.text_by_label]
+  masters = "Graduation Project: \\textit{InsideOut} --- Grade: \\textbf{A} (both phases). Coursework: Data Structures \\& Algorithms, OOP, Operating Systems"
 
   # Academic detail. A recruiter does not want credit-hour arithmetic on a
   # one-page CV, but a German admissions committee assesses "suitability of

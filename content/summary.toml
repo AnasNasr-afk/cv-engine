@@ -8,10 +8,6 @@
 # CV belongs in the QA pile. Keep it to three lines.
 
 [[entry]]
-label    = "ios"
-headline = "Mobile Software Engineer"
-
-[[entry]]
 label    = "qa"
 headline = "Junior QA Engineer"
 text     = """

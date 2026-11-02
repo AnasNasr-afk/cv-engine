@@ -18,45 +18,36 @@
 [[entry]]
 org      = "Gym-Z"
 location = "Remote"
-role     = "Mobile Engineer"
+role     = "Flutter Engineer"
 dates    = "Oct 2026 -- Present"
 tags     = ["flutter", "mobile", "industry", "shipped"]
 weight   = 10
 
-  # "Built", not "launched": the member app is in Play closed testing,
-  # production access opens mid-November at the earliest.
+  # Short on purpose: one month in (Anas, Nov 2026). Ownership and value
+  # first. Chat is named as a feature of the apps he owns, not as his
+  # build: the Socket.io chat predates him; his commits restyled it. "Release" = Google Play closed testing (member live with
+  # testers 29 Oct, coach submitted the same day); not production yet.
   [[entry.bullets]]
   id       = "fit99-white-label"
-  text     = "Built \\textbf{Fit99}, a white-label member app for a partner gym, from the GymZ \\textbf{Flutter} codebase: new design system with light and dark tokens, bundled fonts, icon and splash, in English and Arabic"
+  text     = "Designed the \\textbf{mobile architecture} for the Gym-Z SaaS: each partner gym gets its own branded member and coach apps from one shared codebase"
   tags     = ["flutter", "dart", "mobile", "ui", "architecture", "shipped"]
   weight   = 9
   evidence = [
     "Gym-Z/Fit99-MemberApp#1",
     "Gym-Z/Fit99-MemberApp#2",
-  ]
-
-  [[entry.bullets]]
-  id       = "fit99-screens"
-  text     = "Redesigned Home, Workouts, Guests and Workout Log with \\textbf{Cubit}: subscription states (frozen, unpaid, ending soon), class booking, freeze and unfreeze, and a fix for visit times shown in UTC"
-  tags     = ["flutter", "dart", "mobile", "ui", "product", "debugging"]
-  weight   = 9
-  evidence = [
-    "Gym-Z/Fit99-MemberApp#2",
     "Gym-Z/Fit99-MemberApp#3",
   ]
 
-  # Play Console work leaves no commits. The member app's closed test went
-  # live 29 Oct with 12 testers; the coach app was submitted the same day.
   [[entry.bullets]]
-  id       = "fit99-play-release"
-  text     = "Took the Fit99 member and coach apps to \\textbf{Google Play} closed testing: signing, data safety, health and content-rating declarations, and store listings"
-  tags     = ["flutter", "mobile", "release", "shipped"]
-  weight   = 8
-  evidence = []
+  id       = "fit99-release"
+  text     = "Owned the Fit99 apps from redesign to \\textbf{Google Play} release: 8 screens redesigned, plus real-time \\textbf{Socket.io} chat between members and coaches"
+  tags     = ["flutter", "mobile", "release", "shipped", "ownership"]
+  weight   = 9
+  evidence = ["Gym-Z/Fit99-MemberApp#3"]
 
 [[entry]]
 org      = "4Sale International Co."
-location = "Zamalek, Cairo"
+location = "Cairo, Egypt"
 role     = "Software Engineer (iOS)"
 dates    = "July 2026 -- Sep 2026"
 tags     = ["ios", "web", "mobile", "industry"]
@@ -89,7 +80,7 @@ weight   = 10
   # reviewer. He did NOT build the seller upload flow -- a teammate did.
   [[entry.bullets]]
   id       = "reels-web"
-  text     = "Built the web client for \\textbf{4Sale Reels}, the marketplace's short-form video feed: cursor-paginated feed and API layer, playback tuned for low-end devices, and \\textbf{Amplitude} tracking for impressions, watch time and engagement"
+  text     = "Built the web client for \\textbf{4Sale Reels}, the marketplace's short-form video feed: cursor-paginated feed and API layer, playback tuned for low-end devices, and \\textbf{Amplitude} tracking of user interactions"
   tags     = ["web", "typescript", "react", "performance", "analytics", "media"]
   weight   = 9
   evidence = [
@@ -114,13 +105,13 @@ weight   = 10
   # as a server-driven UI component. Lives outside the repos on disk.
   [[entry.bullets]]
   id       = "sdui-feed-port"
-  text     = "Ported the Reels feed to a \\textbf{server-driven UI} component on iOS and Android, so layout changes ship without an app release"
+  text     = "Rebuilt the Reels feed as a \\textbf{server-driven UI} component on iOS and Android, so layout changes ship without an app release"
   tags     = ["ios", "mobile", "architecture", "sdui"]
   weight   = 9
   evidence = []
 
   [entry.bullets.text_by_label]
-  qa = "Ported the Reels feed to a \\textbf{server-driven UI} component on \\textbf{iOS and Android}, testing one feed across both platforms so layout changes ship without an app release"
+  qa = "Rebuilt the Reels feed as a \\textbf{server-driven UI} component on \\textbf{iOS and Android}, testing one feed across both platforms so layout changes ship without an app release"
 
   [entry.bullets.weight_by_label]
   qa = 5
@@ -132,7 +123,7 @@ weight   = 10
   # blog CMS -- the repo's own CLAUDE.md is explicit about that.
   [[entry.bullets]]
   id       = "landing-page-builder"
-  text     = "Built an internal \\textbf{landing-page builder} that lets the marketing team publish SEO pages without engineering: block editor with undo/redo, live listings from the search API"
+  text     = "Built an internal \\textbf{landing-page builder} that lets the marketing team publish pages without engineering: drag-and-drop components, live listings from the search API, and \\textbf{SEO} best practices"
   tags     = ["web", "react", "typescript", "internal-tools", "devops"]
   weight   = 8
   evidence = [
@@ -170,34 +161,30 @@ weight   = 10
 
 [[entry]]
 org      = "Banque Misr"
-location = "Fifth Settlement, Cairo"
+location = "Cairo, Egypt"
 role     = "iOS Developer Intern"
 dates    = "July 2025 -- Aug 2025"
 tags     = ["ios", "mobile", "industry"]
 weight   = 8
 
+  # Rewritten 2 Nov 2026 from the only evidence on record: the team repo
+  # (AnasNasr-afk/Banque-Misr-team1, Jul 2025). Swiftly Planner is a
+  # console Swift app, 5 interns; git cannot show who wrote which file.
+  # The old SwiftUI/UIKit "4 internal apps" and "11+ bugs" lines had no
+  # evidence and were replaced at Anas's request.
   [[entry.bullets]]
-  id       = "bm-shared-components"
-  text     = "Wrote \\textbf{SwiftUI} and \\textbf{UIKit} components across 4 internal iOS apps, reused between screens"
-  tags     = ["ios", "swift", "ui"]
+  id       = "bm-swiftly-planner"
+  text     = "Built a \\textbf{Swift} app for Banque Misr's iOS program with role-based access and input validation, in a team of 5"
+  tags     = ["ios", "swift", "architecture"]
   weight   = 8
-  evidence = []
-
-  [entry.bullets.text_by_label]
-  qa = "Wrote \\textbf{SwiftUI} and \\textbf{UIKit} components across 4 internal \\textbf{banking} apps, checked against the design specs"
+  evidence = ["AnasNasr-afk/Banque-Misr-team1"]
 
   [[entry.bullets]]
-  id       = "bm-bugfix-profiling"
-  text     = "Fixed 11+ UI and API bugs, profiling the slow ones with \\textbf{Xcode Instruments}"
-  tags     = ["ios", "performance", "debugging"]
+  id       = "bm-architecture-demo"
+  text     = "Split it into controller, model, presenter and validation layers, and mapped the flow in a \\textbf{sequence diagram}"
+  tags     = ["ios", "swift", "architecture", "process"]
   weight   = 7
-  evidence = []
-
-  # Carried over verbatim from the QA CV he has already sent out. The
-  # 20% is his own figure and has no commit behind it -- `make audit`
-  # lists it, which is the right place for it to be listed.
-  [entry.bullets.text_by_label]
-  qa = "Identified, debugged and resolved \\textbf{11+ UI and API defects}, profiling with \\textbf{Xcode Instruments} --- app stability up 20%"
+  evidence = ["AnasNasr-afk/Banque-Misr-team1"]
 
   [[entry.bullets]]
   id       = "bm-sprint-planning"
@@ -215,39 +202,18 @@ weight   = 8
 
 [[entry]]
 org      = "Hassan Allam Holding"
-location = "Sheraton, Cairo"
+location = "Cairo, Egypt"
 role     = "Flutter Developer Intern"
 dates    = "July 2024 -- Aug 2024"
 tags     = ["flutter", "mobile", "industry"]
 weight   = 7
 
+  # Rewritten 2 Nov 2026 (Anas): the internship was mostly a course --
+  # Flutter foundations plus AR with Vuforia. One line on every CV; the
+  # earlier Figma, state-management and AR-roadmap bullets were dropped.
   [[entry.bullets]]
-  id       = "ha-figma-components"
-  text     = "Converted 7+ Figma designs into production-ready \\textbf{Flutter} components, standardising the shared UI layer"
-  tags     = ["flutter", "dart", "ui"]
-  weight   = 7
-  evidence = []
-
-  [entry.bullets.text_by_label]
-  qa = "Validated 7+ \\textbf{Figma} designs against the production \\textbf{Flutter} components, catching UI inconsistencies early"
-  ai = "Converted 7+ Figma designs into \\textbf{Flutter} components for the shared UI"
-
-  [[entry.bullets]]
-  id       = "ha-state-management"
-  text     = "Set up \\textbf{BLoC/Cubit} state management across several apps to cut unnecessary rebuilds, checked in Flutter DevTools"
-  tags     = ["flutter", "dart", "architecture", "performance"]
+  id       = "ha-flutter-foundations"
+  text     = "Developed core \\textbf{Flutter} skills in UI layouts and \\textbf{BLoC/Cubit} state management, and AR with \\textbf{Vuforia}"
+  tags     = ["flutter", "dart", "ar", "foundations"]
   weight   = 8
   evidence = []
-
-  [entry.bullets.text_by_label]
-  ai = "Set up \\textbf{BLoC/Cubit} across several apps and checked rebuilds in Flutter DevTools"
-
-  [[entry.bullets]]
-  id       = "ha-ar-prototype"
-  text     = "Prototyped AR features with \\textbf{Vuforia} and wrote the feasibility report that put AR on the roadmap"
-  tags     = ["flutter", "ar", "research"]
-  weight   = 6
-  evidence = []
-
-  [entry.bullets.text_by_label]
-  qa = "Prototyped AR with \\textbf{Vuforia} and wrote the feasibility report --- scope, risks, open questions --- that put AR on the roadmap"
