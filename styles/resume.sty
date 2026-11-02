@@ -22,7 +22,9 @@
 \setlength{\multicolsep}{-3.0pt}
 \setlength{\columnsep}{-1pt}
 \input{glyphtounicode}
-\RequirePackage[margin=1.1cm]{geometry}
+% Sides: 0.5in each, the reference CV's text width (523pt) centred.
+% Top and bottom stay tight at 1.1cm.
+\RequirePackage[left=0.5in, right=0.5in, top=0.45cm, bottom=0.45cm]{geometry}
 
 % ---------------------------------------------------------------
 % Page style: no header, no footer, no rules.
@@ -33,11 +35,16 @@
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
 
-\addtolength{\oddsidemargin}{-0.15in}
-\addtolength{\textwidth}{0.3in}
-
 \urlstyle{same}
-\raggedbottom
+% Fill the page: leftover space is spread across the stretchable gaps
+% below (sections, entries), so every one-page CV ends at the bottom
+% margin instead of leaving a white band. Gaps never shrink below the
+% reference CV's spacing; they only grow.
+\flushbottom
+% LaTeX ends a document with \vfil, which would soak up all leftover
+% space and leave the gaps above untouched. On a one-page CV, cancel it
+% so the gaps share the space. Multi-page CVs keep normal behaviour.
+\AtEndDocument{\ifnum\value{page}=1 \par\vspace{0pt plus -1fil}\fi}
 \raggedright
 \setlength{\tabcolsep}{0in}
 
@@ -45,8 +52,10 @@
 % Section headings: small caps, followed by a full-width rule.
 % ---------------------------------------------------------------
 \titleformat{\section}{
-  \vspace{-3pt}\scshape\raggedright\large
+  \vspace{-3pt}\scshape\raggedright\small
 }{}{0em}{}[\color{black}\titlerule\vspace{-3pt}]
+% Space before / after a section heading, tuned to the reference CV.
+\titlespacing*{\section}{0pt}{9.5pt plus 8pt}{7.5pt plus 2pt}
 
 % Emit a ToUnicode map so the PDF stays copy-pasteable and ATS-readable.
 \pdfgentounicode=1
@@ -62,10 +71,23 @@
 
 % \resumeSubheading{org}{location}{role}{dates} -- two-line job/school entry.
 \newcommand{\resumeSubheading}[4]{
-  \vspace{-1pt}\item
-    \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
-      \textbf{#1} & {\small #2} \\
+  \vspace{-1pt plus 3pt}\item\small
+    \begin{tabular*}{\linewidth}[t]{l@{\extracolsep{\fill}}r}
+      \small\textbf{#1} & {\small #2} \\
       \textit{\small#3} & {\small #4} \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+% \resumeEducation{school}{location}{degree}{dates}{detail rows}
+% No bullets: the degree upright, then plain detail lines (thesis,
+% grade) underneath. #5 holds zero or more \resumeEducationDetail rows.
+\newcommand{\resumeEducationDetail}[1]{\multicolumn{2}{l}{\small #1} \\}
+\newcommand{\resumeEducation}[5]{
+  \vspace{-1pt plus 3pt}\item\small
+    \begin{tabular*}{\linewidth}[t]{l@{\extracolsep{\fill}}r}
+      \small\textbf{#1} & {\small #2} \\
+      \small #3 & {\small #4} \\
+      #5
     \end{tabular*}\vspace{-5pt}
 }
 
@@ -74,21 +96,26 @@
 % following \vspace relies on. At exactly 1.0 the headings collapse onto
 % their bullets. \hfuzz keeps that overflow out of the log.
 \newcommand{\resumeProjectHeading}[2]{
-  \vspace{-1pt}\item\hfuzz=1pt
-    \begin{tabular*}{1.001\textwidth}{l@{\extracolsep{\fill}}r}
+  \vspace{-1pt plus 3pt}\item\hfuzz=1pt
+    \begin{tabular*}{1.001\linewidth}{l@{\extracolsep{\fill}}r}
       \small\textbf{#1} & \small #2\\
     \end{tabular*}\vspace{-6pt}
 }
 
-\renewcommand\labelitemi{$\vcenter{\hbox{\tiny$\bullet$}}$}
-\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+% \resumeDescription{text} -- plain paragraph under a project or
+% leadership heading, aligned with the heading text (no bullet), as in
+% the reference CV.
+\newcommand{\resumeDescription}[1]{\small #1\par}
+
+\renewcommand\labelitemi{\small$\bullet$}
+\renewcommand\labelitemii{\small$\bullet$}
 
 % List wrappers. \resumeSubHeadingListStart holds entries;
 % \resumeItemListStart holds the bullets inside one entry.
-\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.0in, label={}]}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.2in, label={}]}
 \newcommand{\resumeSubHeadingListEnd}{\end{itemize}\vspace{0pt}}
-\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.2in]}
-\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.35in]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-8pt}}
 
 % ---------------------------------------------------------------
 % Tabular (German Lebenslauf) primitives.

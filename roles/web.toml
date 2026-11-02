@@ -29,7 +29,7 @@ order = ["education", "experience", "projects", "skills", "leadership"]
 [limits]
 education_bullets_max = 1   # graduation project only; no credit-hour detail
 experience_bullets_max = 4
-experience_bullets_by_rank = [3, 3, 2, 1]   # newest first; older jobs get fewer lines
+experience_bullets_by_rank = [3, 5, 2, 1]   # 4Sale (2nd) keeps all five: its strongest work, Anas Nov 2026
 projects_max           = 4
 project_bullets_max    = 1
 skills_max             = 5

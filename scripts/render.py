@@ -232,23 +232,22 @@ def render_heading(profile: dict[str, Any], role: str, headline: str = "") -> st
     )
     return (
         GENERATED_HEADER.format(role=role)
-        + "\\begin{center}\n"
-        f"  {{\\Huge \\scshape {tex(profile['name'])}}} \\\\[4pt]\n"
+        + "{\\centering\n"
+        f"  {{\\Huge \\scshape {tex(profile['name'])}}} \\\\[1.5pt]\n"
         # The target job title, for CVs applying outside the track the
         # bullets are written in. Omitted when the role does not set one.
         + (f"  {{\\large \\scshape {tex(headline)}}} \\\\[3pt]\n" if headline else "")
-        + "  \\footnotesize\n"
+        + "  \\small\n"
         f"  {tex(profile['location'])} $\\cdot$\n"
         f"  \\underline{{\\href{{mailto:{profile['email']}}}{{{profile['email']}}}}} $\\cdot$\n"
-        f"  {tex(profile['phone'])} \\\\[2pt]\n"
-        f"  {links}\n"
-        "\\end{center}\n"
-        "\\vspace{-11pt}\n"
+        f"  {tex(profile['phone'])} \\\\\n"
+        f"  {links}\\par}}\n"
+        "\\vspace{-4pt}\n"
     )
 
 
 def render_subheading_section(title: str, entries: list[dict[str, Any]], role: str,
-                              tail_space: str = "-14pt") -> str:
+                              tail_space: str = "-12pt") -> str:
     out = [GENERATED_HEADER.format(role=role), f"\\section{{{title}}}",
            "\\resumeSubHeadingListStart", ""]
     for entry in entries:
@@ -266,9 +265,31 @@ def render_subheading_section(title: str, entries: list[dict[str, Any]], role: s
     return "\n".join(out) + "\n"
 
 
+def render_education(entries: list[dict[str, Any]], role: str) -> str:
+    """School, degree and dates, then the kept details as plain lines.
+
+    No bullets: a degree has facts (thesis, grade), not achievements, and
+    plain lines under it read as part of the entry. Same layout as the
+    reference CV Anas chose to follow (Nov 2026).
+    """
+    out = [GENERATED_HEADER.format(role=role), "\\section{Education}",
+           "\\resumeSubHeadingListStart", ""]
+    for entry in entries:
+        details = "".join(f"\\resumeEducationDetail{{{tex(b['text'])}}}"
+                          for b in entry["_bullets"])
+        out.append("  \\resumeEducation")
+        out.append(f"    {{{tex(entry['org'])}}}{{{tex(entry['location'])}}}")
+        out.append(f"    {{{tex(entry['role'])}}}{{{tex(entry['dates'])}}}")
+        out.append(f"    {{{details}}}")
+        out.append("")
+    out.append("\\resumeSubHeadingListEnd")
+    out.append("\\vspace{-12pt}")
+    return "\n".join(out) + "\n"
+
+
 def render_projects(entries: list[dict[str, Any]], role: str) -> str:
     out = [GENERATED_HEADER.format(role=role), "\\section{Projects}",
-           "\\vspace{-4pt}", "\\resumeSubHeadingListStart", ""]
+           "\\vspace{-5pt}", "\\resumeSubHeadingListStart", ""]
     for index, entry in enumerate(entries):
         links = " $|$ ".join(
             f"\\underline{{\\href{{{esc_url(l['url'])}}}{{{l['label']}}}}}"
@@ -278,16 +299,18 @@ def render_projects(entries: list[dict[str, Any]], role: str) -> str:
         out.append("\\resumeProjectHeading")
         out.append(f"  {{{tex(entry['name'])}{stack}}}")
         out.append(f"  {{{links}}}")
+        # No bullets: one short paragraph per project, like the reference.
         if entry["_bullets"]:
-            out.append("\\resumeItemListStart")
-            for bullet in entry["_bullets"]:
-                out.append(f"  \\resumeItem{{{tex(bullet['text'])}}}")
-            out.append("\\resumeItemListEnd")
+            out.append("  \\par\\vspace{-10pt}")
+        for bullet in entry["_bullets"]:
+            # Plain text: no bold inside project descriptions (Anas, Nov 2026).
+            plain = re.sub(r"\\textbf\{([^{}]*)\}", r"\1", bullet["text"])
+            out.append(f"  \\resumeDescription{{{tex(plain)}}}")
         if index != len(entries) - 1:
-            out.append("\\vspace{-12pt}")
+            out.append("\\vspace{-14pt}")
         out.append("")
     out.append("\\resumeSubHeadingListEnd")
-    out.append("\\vspace{-14pt}")
+    out.append("\\vspace{-14.5pt}")
     return "\n".join(out) + "\n"
 
 
@@ -304,7 +327,7 @@ def render_summary(entry: dict[str, Any], role: str) -> str:
         GENERATED_HEADER.format(role=role)
         + "\\section{Summary}\n"
         "\\vspace{2pt}\n"
-        "\\begin{itemize}[leftmargin=0.15in, label={}]\n"
+        "\\begin{itemize}[leftmargin=0.2in, label={}]\n"
         "  \\small{\\item{\n"
         f"    {tex(entry['text'])}\n"
         "  }}\n\\end{itemize}\n\\vspace{-13pt}\n"
@@ -335,32 +358,34 @@ def render_certifications(entries: list[dict[str, Any]], role: str) -> str:
 
 
 def render_skills(categories: list[dict[str, Any]], role: str) -> str:
-    lines = []
-    for index, cat in enumerate(categories):
-        sep = " \\\\[1mm]" if index != len(categories) - 1 else ""
-        lines.append(f"    \\textbf{{{tex(cat['label'])}}}{{: {tex(cat['items'])}}}{sep}")
+    """Two-column table, as in the reference CV: bold labels on the left,
+    items starting one small gap after the LONGEST label (the reference's
+    rule; its column only sits mid-page because its longest label is
+    "Programming Languages:"). Each row should fit one line; anything
+    longer wraps inside the item column, never under the labels."""
+    rows = [f"    \\textbf{{{tex(cat['label'])}:}} & {tex(cat['items'])} \\\\"
+            for cat in categories]
     return (
         GENERATED_HEADER.format(role=role)
-        + "\\section{Technical Skills}\n"
-        "\\begin{itemize}[leftmargin=0.15in, label={}]\n"
-        "  \\small{\\item{\n"
-        + "\n".join(lines)
-        + "\n  }}\n\\end{itemize}\n\\vspace{-14pt}\n"
+        + "\\section{Technical Skills}\n\\vspace{-2pt}\n"
+        "\\begin{itemize}[leftmargin=0.28in, label={}]\n"
+        "  \\small\\item\n"
+        "  \\begin{tabularx}{\\linewidth}[t]{@{}l@{\\hspace{6pt}}>{\\raggedright\\arraybackslash}X@{}}\n"
+        + "\n".join(rows)
+        + "\n  \\end{tabularx}\n\\end{itemize}\n\\vspace{-14pt}\n"
     )
-
 
 def render_leadership(entries: list[dict[str, Any]], role: str) -> str:
     out = [GENERATED_HEADER.format(role=role), "\\section{Leadership \\& Community}",
-           "\\vspace{-4pt}", "\\resumeSubHeadingListStart", ""]
+           "\\vspace{-5pt}", "\\resumeSubHeadingListStart", ""]
     for entry in entries:
         out.append("  \\resumeProjectHeading")
         out.append(f"    {{{tex(entry['name'])}}}")
         out.append(f"    {{{tex(entry['dates'])}}}")
         if entry["_bullets"]:
-            out.append("  \\resumeItemListStart")
-            for bullet in entry["_bullets"]:
-                out.append(f"    \\resumeItem{{{tex(bullet['text'])}}}")
-            out.append("  \\resumeItemListEnd")
+            out.append("    \\par\\vspace{-10pt}")
+        for bullet in entry["_bullets"]:
+            out.append(f"    \\resumeDescription{{{tex(bullet['text'])}}}")
         out.append("")
     out.append("\\resumeSubHeadingListEnd")
     return "\n".join(out) + "\n"
@@ -585,6 +610,10 @@ def main() -> int:
     # out by a role's tag weighting.
     prj.sort(key=lambda e: (not e.get("pin", False), -e["_score"]))
     prj = prj[: limits.get("projects_max", 4)]
+    # Shown in authored order (projects.toml), whatever the role picked:
+    # RASM, InsideOut, Sound'sCool, CairoCrew (Anas, Nov 2026).
+    authored = {e["name"]: i for i, e in enumerate(projects)}
+    prj.sort(key=lambda e: authored[e["name"]])
     # Certifications are scored only for the roles that show the section.
     # Otherwise they would count against the bullet budget on every CV
     # that never renders them.
@@ -599,7 +628,12 @@ def main() -> int:
     ldr.sort(key=lambda e: -e["_score"])
     ldr = ldr[: limits.get("leadership_max", 1)]
 
-    skl = sorted(skills, key=lambda c: -score_of(c, boost))[: limits.get("skills_max", 5)]
+    # Categories marked `first` (Languages) lead every CV and are never
+    # ranked out; the remaining slots go to the role's best categories.
+    lead = [c for c in skills if c.get("first")]
+    rest = sorted((c for c in skills if not c.get("first")),
+                  key=lambda c: -score_of(c, boost))
+    skl = (lead + rest)[: max(limits.get("skills_max", 5), len(lead))]
 
     dropped = apply_budget(
         {"education": edu, "experience": exp, "projects": prj,
@@ -624,7 +658,7 @@ def main() -> int:
         written = {
             "heading.tex": render_heading(profile, args.role,
                                           (summary or {}).get("headline", "")),
-            "education.tex": render_subheading_section("Education", edu, args.role),
+            "education.tex": render_education(edu, args.role),
             "experience.tex": render_subheading_section("Experience", exp, args.role),
             "skills.tex": render_skills(skl, args.role),
             "projects.tex": render_projects(prj, args.role),
